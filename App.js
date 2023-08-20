@@ -1,3 +1,4 @@
+import styles from './style';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
 
@@ -10,30 +11,29 @@ export default function App() {
     const Tab = createBottomTabNavigator();
     return (
         <NavigationContainer>
-            <Tab.Navigator screenOptions={{
-                tabBarShowLabel: false
-            }}>
+            <Tab.Navigator initialRouteName='Home' screenOptions={styles.BarStyle}>
 
                 {/*         Test         */}
                 <Tab.Screen name="Test" component={Home} options={{
-                    tabBarIcon: () => (
-                        <MaterialCommunityIcons name="test-tube" size={35} color="black" />
+                    tabBarIcon: ({color}) => (
+                        <MaterialCommunityIcons name="test-tube" size={35} color={color} />
                     )
                 }} />
 
                 {/*        Home       */}
                 <Tab.Screen name="Home" component={Home} options={{
-                    tabBarIcon: () => (
-                        <MaterialCommunityIcons name="home-circle" size={35} color="black" />
+                    tabBarIcon: ({color}) => (
+                        <MaterialCommunityIcons name="home-circle" size={35} color={color} />
                     )
                 }} />
 
                 {/*        Game       */}
                 <Tab.Screen name="Game" component={Home} options={{
-                    tabBarIcon: () => (
-                        <FontAwesome name="gamepad" size={24} color="black" />
+                    tabBarIcon: ({color}) => (
+                        <FontAwesome name="gamepad" size={24} color={color} />
                     )
                 }} />
+
             </Tab.Navigator>
         </NavigationContainer>
     );
