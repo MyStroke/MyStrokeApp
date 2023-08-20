@@ -1,20 +1,40 @@
-import { StatusBar } from 'expo-status-bar';
-import { StyleSheet, Text, View } from 'react-native';
+import { NavigationContainer } from '@react-navigation/native';
+import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+
+import { MaterialCommunityIcons } from '@expo/vector-icons';
+import { FontAwesome } from '@expo/vector-icons';
+
+import Home from './component/Home';
 
 export default function App() {
-  return (
-    <View style={styles.container}>
-      <Text>Open up App.js to start working on your app!</Text>
-      <StatusBar style="auto" />
-    </View>
-  );
-}
+    const Tab = createBottomTabNavigator();
+    return (
+        <NavigationContainer>
+            <Tab.Navigator screenOptions={{
+                tabBarShowLabel: false
+            }}>
 
-const styles = StyleSheet.create({
-  container: {
-    flex: 1,
-    backgroundColor: '#fff',
-    alignItems: 'center',
-    justifyContent: 'center',
-  },
-});
+                {/*         Test         */}
+                <Tab.Screen name="Test" component={Home} options={{
+                    tabBarIcon: () => (
+                        <MaterialCommunityIcons name="test-tube" size={35} color="black" />
+                    )
+                }} />
+
+                {/*        Home       */}
+                <Tab.Screen name="Home" component={Home} options={{
+                    tabBarIcon: () => (
+                        <MaterialCommunityIcons name="home-circle" size={35} color="black" />
+                    )
+                }} />
+
+                {/*        Game       */}
+                <Tab.Screen name="Game" component={Home} options={{
+                    tabBarIcon: () => (
+                        <FontAwesome name="gamepad" size={24} color="black" />
+                    )
+                }} />
+            </Tab.Navigator>
+        </NavigationContainer>
+    );
+}
