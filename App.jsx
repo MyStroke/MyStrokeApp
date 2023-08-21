@@ -11,6 +11,7 @@ import { FontAwesome } from '@expo/vector-icons';
 import Loading from './component/Loading';
 import Home from './component/Home/Home';
 import Game from './component/Game/Game';
+import Test from './component/Test/Test';
 
 export default function App() {
     const Tab = createBottomTabNavigator();
@@ -41,7 +42,7 @@ export default function App() {
                     }} />
 
                     {/*         Test         */}
-                    <Tab.Screen name="Test" component={Home} options={{
+                    <Tab.Screen name="Test" component={Test} options={{
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="test-tube" size={40} color={color} />
                         )
