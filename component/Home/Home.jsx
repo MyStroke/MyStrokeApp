@@ -6,7 +6,6 @@ export default function Home() {
     return (
         <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
             <Text>Home</Text>
-            <Image source={require('../../data/Logo.png')} style={styles.IconStyle} />
         </View>
     );
 }
