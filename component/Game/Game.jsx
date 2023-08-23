@@ -1,10 +1,19 @@
 import React from "react";
-import { View, Text, Button } from "react-native";
+import { View, Text, Button, StyleSheet } from "react-native";
+import Time from "./Time";
 
-export default function Game() {
+export default function Game({updateScoreData}) {
     return (
-        <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-            <Text>This is Game Screen</Text>
+        <View style={styles.container}>
+            <Time updateScoreData={updateScoreData} />
         </View>
     );
 }
+
+const styles = StyleSheet.create({
+    container: {
+        flex: 1,
+        justifyContent: "center",
+        alignItems: "center"
+    }
+});

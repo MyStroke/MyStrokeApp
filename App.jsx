@@ -17,12 +17,17 @@ export default function App() {
     const Tab = createBottomTabNavigator();
 
     const [isLoading, setIsLoading] = useState(true);
+    const [scoreData, setScoreData] = useState([]);
 
     useEffect(() => {
         setTimeout(() => {
             setIsLoading(false);
         }, 3000);
     }, []);
+
+    const updateScoreData = (score) => {
+        setScoreData((prevScoreData) => [...prevScoreData, score]);
+    };
 
     return (
         <NavigationContainer>
@@ -42,18 +47,22 @@ export default function App() {
                     }} />
 
                     {/*         Test         */}
-                    <Tab.Screen name="Test" component={Test} options={{
+                    <Tab.Screen name="Test" options={{
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="test-tube" size={40} color={color} />
                         )
-                    }} />
+                    }}>
+                        {() => <Test scoreData={scoreData} />}
+                    </Tab.Screen>
 
                     {/*        Game       */}
-                    <Tab.Screen name="Game" component={Game} options={{
+                    <Tab.Screen name="Game" options={{
                         tabBarIcon: ({ color }) => (
                             <FontAwesome name="gamepad" size={40} color={color} />
                         )
-                    }} />
+                    }}>
+                        {() => <Game updateScoreData={updateScoreData} />}
+                    </Tab.Screen>
 
                 </Tab.Navigator>
             )}

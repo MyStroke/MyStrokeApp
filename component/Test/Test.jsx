@@ -1,26 +1,19 @@
 import React from "react";
-import { View, Text, StyleSheet, Image } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { LineChart } from "react-native-gifted-charts"
 
-export default function App() {
-    const lineData = [
-        { value: 0, dataPointText: '0' },
-        { value: 20, dataPointText: '20' },
-        { value: 18, dataPointText: '18' },
-        { value: 40, dataPointText: '40' },
-        { value: 36, dataPointText: '36' },
-        { value: 60, dataPointText: '60' },
-        { value: 54, dataPointText: '54' },
-        { value: 85, dataPointText: '85' }
-    ];
+export default function LineChartComponent({ scoreData }) {
+    const lineData = scoreData.map((score, index) => ({ value: score, dataPointText: index.toString() }));
+
     return (
         <View>
-            <View style={{marginTop: 50}}>
+            <View style={{ marginTop: 50 }}>
                 <LineChart style={styles.graph}
                     dataPointsColor="yellow"
                     thickness={6}
                     color="#07BAD1"
                     noOfSections={2}
+                    isAnimated
                     areaChart
                     yAxisTextStyle={{ color: '#1F1639' }}
                     hideRules
