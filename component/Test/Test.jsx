@@ -3,7 +3,14 @@ import { View, StyleSheet } from "react-native";
 import { LineChart } from "react-native-gifted-charts"
 
 export default function LineChartComponent({ scoreData }) {
-    const lineData = scoreData.map((score, index) => ({ value: score, dataPointText: index.toString() }));
+    let lineData = [{ value: 0, dataPointText: 0 }];
+    lineData = scoreData.map((score) => ({ value: score, dataPointText: score }));
+
+    if (lineData.length > 1) {
+        lineData.shift();
+        lineData.pop();
+    }
+    
 
     return (
         <View>
