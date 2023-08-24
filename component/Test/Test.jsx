@@ -1,19 +1,43 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Text } from "react-native";
 import { LineChart } from "react-native-gifted-charts"
 
 export default function LineChartComponent({ scoreData }) {
+    const [status, setstatus] = React.useState("");
+    const [showknowledge, setShowknowledge] = React.useState(false);
     let lineData = [{ value: 0, dataPointText: 0 }];
     lineData = scoreData.map((score) => ({ value: score, dataPointText: score }));
 
-    if (lineData.length > 1) {
-        lineData.shift();
-        lineData.pop();
-    }
-    
+
+    const showstatus = () => {
+        if (lineData.length > 0) {
+            const latestData = lineData[lineData.length - 1]; // ดึงค่าล่าสุดจากอาร์เรย์
+            if (latestData.value > 29) {
+                setstatus("Good");
+            }
+
+            else if (latestData.value > 19) {
+                setstatus("Average");
+            }
+
+            else if (latestData.value > 0) {
+                setstatus("Bad");
+            }
+
+            else {
+                setstatus("ยังไม่ได้ทำแบบทดสอบ");
+            }
+        }
+    };
+
+    React.useEffect(() => {
+        showstatus();
+        setShowknowledge(true);
+    }, [lineData]);
 
     return (
-        <View>
+        <View style={styles.container}>
+            {/*         Graph        */}
             <View style={{ marginTop: 50 }}>
                 <LineChart style={styles.graph}
                     dataPointsColor="yellow"
@@ -37,6 +61,26 @@ export default function LineChartComponent({ scoreData }) {
                     dataPointsWidth={20}
                 />
             </View>
+            {/*         box          */}
+            {showknowledge ? (
+                <View style={styles.box}>
+                    <View style={{ flex: 1, marginTop: "8%",  }}>
+                        <Text style={styles.box.text}>You are in</Text>
+                        <Text style={styles.box.status}>
+                            {status}
+                        </Text>
+                        <Text style={styles.box.text}>Condition</Text>
+                    </View>
+                    <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                        <Text style={styles.box.status2}>คุณสามารถใช้มือหยิบจับสิ่งของได้ ตามปกติ</Text>
+                    </View>
+                </View>
+            ) : null
+            }
+            {/*         History      */}
+            <View style={styles.History}>
+                <Text style={{ color: "#F3DFC1", fontSize: 20, textAlign: "center", padding: 10, }}>ประวัติการรักษา</Text>
+            </View>
         </View>
     );
 }
@@ -45,10 +89,56 @@ const styles = StyleSheet.create({
     container: {
         flex: 1,
         justifyContent: "center",
+        alignItems: 'center',
+        position: 'relative',
+    },
+    box: {
+        marginTop: 50,
+        width: 300,
+        height: 300,
+        backgroundColor: "#1F1639",
+        borderRadius: 20,
+        alignItems: "center",
+        justifyContent: "center",
+
+        text: {
+            color: "white",
+            fontSize: 20,
+            textAlign: "center",
+            padding: 10,
+        },
+
+        status: {
+            color: "#368F8B",
+            fontSize: 60,
+            textAlign: "center",
+            padding: 10,
+        },
+
+        status2: {
+            paddingTop: 15,
+            color: "#F3DFC1",
+            fontSize: 15,
+            textAlign: "center",
+            alignItems: "center",
+            width: 300,
+            height: 53,
+            flexShrink: 5,
+            borderBottomLeftRadius: 20,
+            borderBottomRightRadius: 20,
+            backgroundColor: "#246A73",
+        }
     },
     graph: {
-        backgroundColor: "#1F1639",
-        marginTop: 50,
-        borderRadius: 20,
+        maxWidth: 350,
+        width: 350,
+    },
+    History: {
+        position: 'absolute',
+        top: 5,
+        left: 5,
+        backgroundColor: "#246A73",
+        padding: 5,
+        borderRadius: 5,
     },
 });
