@@ -17,6 +17,7 @@ export default function Timer({ updateScoreData }) {
             }, 1000);
         } else if (time === 0) {
             setIsActive(false);
+            updateScoreData(Score);
         }
 
         return () => {
