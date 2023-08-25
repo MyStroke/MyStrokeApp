@@ -3,6 +3,7 @@ import { View, Text, Image, TouchableOpacity, Modal } from "react-native";
 import { StyleSheet } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import { AntDesign } from '@expo/vector-icons';
+import { MaterialCommunityIcons } from '@expo/vector-icons';
 
 export default function Home({ boxstatus, statusHomepage }) {
     const [modalVisible, setModalVisible] = React.useState(false);
@@ -22,6 +23,24 @@ export default function Home({ boxstatus, statusHomepage }) {
             <TouchableOpacity style={styles.HowToUse} onPress={() => setModalVisible(true)}>
                 <AntDesign name="questioncircleo" style={styles.HowToUse.icon} />
             </TouchableOpacity>
+            {/*     Warn     */}
+            <View style={styles.warn}>
+
+                {/*     Water   */}
+                <View style={{width: "50%", padding: 5,}}>
+                    <Text style={{fontSize: 20, paddingBottom: 5,}}><MaterialCommunityIcons name="water-plus" size={24} color="#246A73" /> อย่าลืมดื่มน้ำ</Text>
+                    <Text>รู้ไหมว่าการดื่มน้ำมีส่วนช่วยในการทำงานของระบบประสาท</Text>
+                </View>
+
+                <Text style={{width: 3, height: 150, flexShrink: 0, backgroundColor: "#246A73"}}></Text>
+
+                {/*     walk     */}
+                <View style={{width: "50%", padding: 5, marginLeft: 20,}}>
+                    <Text style={{fontSize: 20, paddingBottom: 5,}}><MaterialCommunityIcons name="walk" size={24} color="#246A73" /> หมั่นเดินบ้าง</Text>
+                    <Text>รู้ไหมว่าการเดินมีส่วนช่วยในการทำงานของระบบประสาท</Text>
+                </View>
+
+            </View>
             {/*     Model    */}
             <Modal visible={modalVisible}>
                 {/*     Model Container    */}
@@ -142,5 +161,11 @@ const styles = StyleSheet.create({
             color: "#F3DFC1",
             fontSize: 20,
         },
-    }
+    },
+    warn: {
+        width: wp("100%"),
+        marginTop: 20,
+        flexDirection: 'row',
+        padding: 20,
+    },
 });
