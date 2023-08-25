@@ -18,6 +18,7 @@ export default function App() {
 
     const [isLoading, setIsLoading] = useState(true);
     const [scoreData, setScoreData] = useState([]);
+    const [boxstatus, setBoxstatus] = useState(null);
 
     useEffect(() => {
         setTimeout(() => {
@@ -40,27 +41,26 @@ export default function App() {
                 <Tab.Navigator initialRouteName='Home' screenOptions={styles.BarStyle}>
 
                     {/*        Home       */}
-                    <Tab.Screen name="Home" component={Home} options={{
+                    <Tab.Screen name="Home" options={{
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="home-circle" style={styles.BarStyle.iconBar} size={40} color={color} />
-                        )
-                    }} />
+                        )}} >
+                        {() => <Home boxstatus={boxstatus} />}
+                    </Tab.Screen>
 
                     {/*         Test         */}
                     <Tab.Screen name="Test" options={{
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="test-tube" style={styles.BarStyle.iconBar} size={40} color={color} />
-                        )
-                    }}>
-                        {() => <Test scoreData={scoreData} />}
+                        )}}>
+                        {() => <Test scoreData={scoreData} setboxstatus={setBoxstatus} />}
                     </Tab.Screen>
 
                     {/*        Game       */}
                     <Tab.Screen name="Game" options={{
                         tabBarIcon: ({ color }) => (
                             <FontAwesome name="gamepad" style={styles.BarStyle.iconBar} size={40} color={color} />
-                        )
-                    }}>
+                        )}}>
                         {() => <Game updateScoreData={updateScoreData} />}
                     </Tab.Screen>
 
