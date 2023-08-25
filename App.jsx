@@ -42,14 +42,14 @@ export default function App() {
                     {/*        Home       */}
                     <Tab.Screen name="Home" component={Home} options={{
                         tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons name="home-circle" size={40} color={color} />
+                            <MaterialCommunityIcons name="home-circle" style={styles.BarStyle.iconBar} size={40} color={color} />
                         )
                     }} />
 
                     {/*         Test         */}
                     <Tab.Screen name="Test" options={{
                         tabBarIcon: ({ color }) => (
-                            <MaterialCommunityIcons name="test-tube" size={40} color={color} />
+                            <MaterialCommunityIcons name="test-tube" style={styles.BarStyle.iconBar} size={40} color={color} />
                         )
                     }}>
                         {() => <Test scoreData={scoreData} />}
@@ -58,7 +58,7 @@ export default function App() {
                     {/*        Game       */}
                     <Tab.Screen name="Game" options={{
                         tabBarIcon: ({ color }) => (
-                            <FontAwesome name="gamepad" size={40} color={color} />
+                            <FontAwesome name="gamepad" style={styles.BarStyle.iconBar} size={40} color={color} />
                         )
                     }}>
                         {() => <Game updateScoreData={updateScoreData} />}

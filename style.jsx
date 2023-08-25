@@ -18,6 +18,9 @@ export default StyleSheet.create({
         },
         headerTintColor: "#F3DFC1", // สีของตัวอักษรบน Header
         headerTitle: "MyStroke", // ตั้งค่า Title บน Header
+        iconBar: {
+            textAlign: "center",
+        },
     },
     Loading: {
         flex: 1,

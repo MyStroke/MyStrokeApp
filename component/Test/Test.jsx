@@ -143,8 +143,8 @@ const styles = StyleSheet.create({
     },
     History: {
         position: 'absolute',
-        top: 5,
-        left: 5,
+        top: 10,
+        left: 10,
         backgroundColor: "#246A73",
         padding: 5,
         borderRadius: 5,
