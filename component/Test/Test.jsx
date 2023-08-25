@@ -43,8 +43,8 @@ export default function LineChartComponent({ scoreData }) {
     return (
         <View style={styles.container}>
             {/*         Graph        */}
-            <View style={{ marginTop: 50 }}>
-                <LineChart style={styles.graph}
+            <View style={styles.graph}>
+                <LineChart
                     dataPointsColor="yellow"
                     thickness={6}
                     color="#07BAD1"
@@ -64,6 +64,7 @@ export default function LineChartComponent({ scoreData }) {
                     initialSpacing={10}
                     dataPointsHeight={20}
                     dataPointsWidth={20}
+                    width={250}
                 />
             </View>
             {/*         box          */}
@@ -137,6 +138,8 @@ const styles = StyleSheet.create({
     graph: {
         maxWidth: 350,
         width: 350,
+        marginTop: 50,
+        justifyContent: "center",
     },
     History: {
         position: 'absolute',
