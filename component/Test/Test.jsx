@@ -4,6 +4,7 @@ import { LineChart } from "react-native-gifted-charts"
 
 export default function LineChartComponent({ scoreData }) {
     const [status, setstatus] = React.useState("");
+    const [status2, setstatus2] = React.useState("");
     const [showknowledge, setShowknowledge] = React.useState(false);
     let lineData = [{ value: 0, dataPointText: 0 }];
     lineData = scoreData.map((score) => ({ value: score, dataPointText: score }));
@@ -11,28 +12,32 @@ export default function LineChartComponent({ scoreData }) {
 
     const showstatus = () => {
         if (lineData.length > 0) {
+            setShowknowledge(true);
             const latestData = lineData[lineData.length - 1]; // ดึงค่าล่าสุดจากอาร์เรย์
             if (latestData.value > 29) {
                 setstatus("Good");
+                setstatus2("คุณสามารถใช้มือหยิบจับสิ่งของได้ ตามปกติ")
             }
 
             else if (latestData.value > 19) {
                 setstatus("Average");
+                setstatus2("คุณอย่าใช้มือมากเกินไป")
             }
 
             else if (latestData.value > 0) {
                 setstatus("Bad");
+                setstatus2("คุณต้องทำการบำบัดอย่างเดียว")
             }
 
             else {
                 setstatus("ยังไม่ได้ทำแบบทดสอบ");
+                setstatus2(null)
             }
         }
     };
 
     React.useEffect(() => {
         showstatus();
-        setShowknowledge(true);
     }, [lineData]);
 
     return (
@@ -72,7 +77,7 @@ export default function LineChartComponent({ scoreData }) {
                         <Text style={styles.box.text}>Condition</Text>
                     </View>
                     <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                        <Text style={styles.box.status2}>คุณสามารถใช้มือหยิบจับสิ่งของได้ ตามปกติ</Text>
+                        <Text style={styles.box.status2}>{status2}</Text>
                     </View>
                 </View>
             ) : null
