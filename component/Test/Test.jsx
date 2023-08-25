@@ -2,7 +2,7 @@ import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { LineChart } from "react-native-gifted-charts"
 
-export default function LineChartComponent({ scoreData, setboxstatus }) {
+export default function LineChartComponent({ scoreData, setboxstatus, setstatusHomepage }) {
     const [status, setstatus] = React.useState("");
     const [status2, setstatus2] = React.useState("");
     const [showknowledge, setShowknowledge] = React.useState(false);
@@ -18,18 +18,21 @@ export default function LineChartComponent({ scoreData, setboxstatus }) {
                 setstatus("Good");
                 setstatus2("คุณสามารถใช้มือหยิบจับสิ่งของได้ ตามปกติ")
                 setboxstatus("Good");
+                setstatusHomepage("คุณสามารถใช้มือหยิบจับสิ่งของได้ ตามปกติ");
             }
 
             else if (latestData.value > 19) {
                 setstatus("Average");
                 setstatus2("คุณอย่าใช้มือมากเกินไป")
                 setboxstatus("Average");
+                setstatusHomepage("คุณอย่าใช้มือมากเกินไป");
             }
 
             else if (latestData.value > 0) {
                 setstatus("Bad");
                 setstatus2("คุณต้องทำการบำบัดอย่างเดียว")
                 setboxstatus("Bad");
+                setstatusHomepage("คุณต้องทำการบำบัดอย่างเดียว");
             }
 
             else {

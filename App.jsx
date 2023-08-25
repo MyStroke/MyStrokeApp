@@ -19,6 +19,7 @@ export default function App() {
     const [isLoading, setIsLoading] = useState(true);
     const [scoreData, setScoreData] = useState([]);
     const [boxstatus, setBoxstatus] = useState(null);
+    const [statusHomepage, setstatusHomepage] = React.useState(null);
 
     useEffect(() => {
         setTimeout(() => {
@@ -45,7 +46,7 @@ export default function App() {
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="home-circle" style={styles.BarStyle.iconBar} size={40} color={color} />
                         )}} >
-                        {() => <Home boxstatus={boxstatus} />}
+                        {() => <Home boxstatus={boxstatus} statusHomepage={statusHomepage} />}
                     </Tab.Screen>
 
                     {/*         Test         */}
@@ -53,7 +54,7 @@ export default function App() {
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="test-tube" style={styles.BarStyle.iconBar} size={40} color={color} />
                         )}}>
-                        {() => <Test scoreData={scoreData} setboxstatus={setBoxstatus} />}
+                        {() => <Test scoreData={scoreData} setboxstatus={setBoxstatus} setstatusHomepage={setstatusHomepage} />}
                     </Tab.Screen>
 
                     {/*        Game       */}
