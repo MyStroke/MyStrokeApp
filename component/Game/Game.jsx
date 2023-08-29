@@ -1,11 +1,16 @@
-import React from "react";
+import React, { useState } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import Time from "./Time";
+import Graph from "./Graph";
 
-export default function Game({updateScoreData}) {
+export default function Game({ updateScoreData }) {
+    const [topscore, setTopscore] = useState(0)
+
     return (
         <View style={styles.container}>
-            <Time updateScoreData={updateScoreData} />
+            <Text style={{fontSize: 30}}>Topscore: {topscore}</Text>
+            <Graph />
+            <Time updateScoreData={updateScoreData} setTopscore={setTopscore} topscore={topscore} />
         </View>
     );
 }
@@ -15,5 +20,5 @@ const styles = StyleSheet.create({
         flex: 1,
         justifyContent: "center",
         alignItems: "center"
-    }
+    },
 });

@@ -1,11 +1,10 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-export default function Timer({ updateScoreData }) {
+export default function Timer({ updateScoreData, setTopscore, topscore }) {
     const [time, setTime] = useState(10);
     const [isActive, setIsActive] = useState(false);
     const [Score, setScore] = useState(0);
-    const [topscore, setTopscore] = useState(0);
 
     // ตั้งเวลา 10 วินาที
     useEffect(() => {
@@ -52,7 +51,6 @@ export default function Timer({ updateScoreData }) {
     return (
         <View>
             <View style={styles.container}>
-                <Text style={styles.score}>Score: {Score}</Text>
                 <Text style={styles.timer}>{formatTime(time)}</Text>
                 <TouchableOpacity onPress={toggleTimer} style={styles.button}>
                     <Text style={styles.buttonText}>{isActive ? 'เริ่มใหม่' : 'เริ่ม'}</Text>
@@ -64,7 +62,7 @@ export default function Timer({ updateScoreData }) {
                     </TouchableOpacity>
                     : null
                 }
-                <Text style={styles.score}>Topscore: {topscore}</Text>
+                <Text style={styles.score}>Score: {Score}</Text>
             </View>
         </View>
     );
@@ -72,12 +70,11 @@ export default function Timer({ updateScoreData }) {
 
 const styles = StyleSheet.create({
     container: {
-        flex: 1,
         alignItems: 'center',
-        justifyContent: 'center',
     },
     score: {
         fontSize: 30,
+        marginTop: 20,
     },
     timer: {
         marginTop: 20,
