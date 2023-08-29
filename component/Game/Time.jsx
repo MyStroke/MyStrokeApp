@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { View, StyleSheet, Text, TouchableOpacity } from 'react-native';
 
-export default function Timer({ updateScoreData, setTopscore, topscore }) {
+export default function Timer({ updateScoreData, setTopscore, topscore, setscorerealtime }) {
     const [time, setTime] = useState(10);
     const [isActive, setIsActive] = useState(false);
     const [Score, setScore] = useState(0);
@@ -31,6 +31,11 @@ export default function Timer({ updateScoreData, setTopscore, topscore }) {
         return `${remainingSeconds.toString().padStart(2, '0')} วินาที`;
     };
 
+    // ทำการ Click
+    function click() {
+        setScore(Score + 1)
+    }
+
     // กดเพื่อเริ่มหรือหยุดเวลา
     const toggleTimer = () => {
         if (isActive) {
@@ -57,7 +62,7 @@ export default function Timer({ updateScoreData, setTopscore, topscore }) {
                 </TouchableOpacity>
                 {/*         กดเมื่อเริ่ม         */}
                 {isActive ?
-                    <TouchableOpacity onPress={() => setScore(Score + 1)} style={styles.button}>
+                    <TouchableOpacity onPress={click} style={styles.button}>
                         <Text style={styles.buttonText}>กด</Text>
                     </TouchableOpacity>
                     : null

@@ -5,6 +5,7 @@ import Graph from "./Graph";
 
 export default function Game({ updateScoreData }) {
     const [topscore, setTopscore] = useState(0)
+    // const [scorerealtime, setscorerealtime] = useState(0)
 
     return (
         <View style={styles.container}>

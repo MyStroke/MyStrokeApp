@@ -4,9 +4,9 @@ import { LineChart } from 'react-native-gifted-charts';
 
 export default function Graph() {
     const lineData = [
-        { value: 0 }, { value: 100 }, { value: 8 },
-        { value: 92 }, { value: 19 }, { value: 81 },
-        { value: 0 }, { value: 100 }];
+        { value: 50 }, { value: 45 }, { value: 15 },
+        { value: 70 }, { value: 35 }, { value: 50 },
+        { value: 50 }, { value: 50 }, { value: 50 }, { value: 50 }];
 
     return (
         <View style={styles.graph}>
@@ -15,6 +15,8 @@ export default function Graph() {
                 curved
                 data={lineData}
                 height={250}
+                maxValue={100}
+                minValue={0}
                 width={250}
                 hideYAxisText={true}
                 showVerticalLines
