@@ -5,13 +5,19 @@ import Graph from "./Graph";
 
 export default function Game({ updateScoreData }) {
     const [topscore, setTopscore] = useState(0)
+    const [Score, setScore] = useState(0);
     // const [scorerealtime, setscorerealtime] = useState(0)
+
+    // แสดงคะแนนสูงสุด
+    if (Score > topscore) {
+        setTopscore(Score);
+    }
 
     return (
         <View style={styles.container}>
             <Text style={{fontSize: 30}}>Topscore: {topscore}</Text>
             <Graph />
-            <Time updateScoreData={updateScoreData} setTopscore={setTopscore} topscore={topscore} />
+            <Time updateScoreData={updateScoreData} Score={Score} setScore={setScore} />
         </View>
     );
 }
