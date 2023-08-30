@@ -6,7 +6,7 @@ import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BarChart } from "react-native-gifted-charts";
 
-export default function Home({ boxstatus, statusHomepage }) {
+export default function Home({ status, status2 }) {
     const [modalVisible, setModalVisible] = React.useState(false);
 
     const data = [
@@ -39,12 +39,12 @@ export default function Home({ boxstatus, statusHomepage }) {
             {/*     Box Status   */}
             <View style={styles.box}>
                 <Text style={styles.box.text}>You are in</Text>
-                <Text style={styles.box.status}>{boxstatus}</Text>
+                <Text style={styles.box.status}>{status}</Text>
                 <Text style={styles.box.text}>Condition</Text>
             </View>
             {/*     Status2    */}
             <View style={{ marginTop: 20, }}>
-                <Text style={styles.status}>{statusHomepage}</Text>
+                <Text style={styles.status}>{status2}</Text>
             </View>
             {/*     Graph Date   */}
             <View style={{ marginTop: 20, }}>

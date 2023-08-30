@@ -2,49 +2,7 @@ import React from "react";
 import { View, StyleSheet, Text } from "react-native";
 import { LineChart } from "react-native-gifted-charts"
 
-export default function LineChartComponent({ scoreData, setboxstatus, setstatusHomepage }) {
-    const [status, setstatus] = React.useState("");
-    const [status2, setstatus2] = React.useState("");
-    const [showknowledge, setShowknowledge] = React.useState(false);
-    let lineData = [{ value: 0, dataPointText: 0 }];
-    lineData = scoreData.map((score) => ({ value: score, dataPointText: score }));
-
-
-    const showstatus = () => {
-        if (lineData.length > 0) {
-            setShowknowledge(true);
-            const latestData = lineData[lineData.length - 1]; // ดึงค่าล่าสุดจากอาร์เรย์
-            if (latestData.value > 29) {
-                setstatus("Good");
-                setstatus2("คุณสามารถใช้มือหยิบจับสิ่งของได้ ตามปกติ")
-                setboxstatus("Good");
-                setstatusHomepage("คุณสามารถใช้มือหยิบจับสิ่งของได้ ตามปกติ");
-            }
-
-            else if (latestData.value > 19) {
-                setstatus("Average");
-                setstatus2("คุณอย่าใช้มือมากเกินไป")
-                setboxstatus("Average");
-                setstatusHomepage("คุณอย่าใช้มือมากเกินไป");
-            }
-
-            else if (latestData.value > 0) {
-                setstatus("Bad");
-                setstatus2("คุณต้องทำการบำบัดอย่างเดียว")
-                setboxstatus("Bad");
-                setstatusHomepage("คุณต้องทำการบำบัดอย่างเดียว");
-            }
-
-            else {
-                setstatus("ยังไม่ได้ทำแบบทดสอบ");
-                setstatus2(null)
-            }
-        }
-    };
-
-    React.useEffect(() => {
-        showstatus();
-    }, [lineData]);
+export default function LineChartComponent({ lineData, status, status2, showknowledge }) {
 
     return (
         <View style={styles.container}>
