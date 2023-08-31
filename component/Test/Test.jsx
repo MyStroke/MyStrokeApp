@@ -4,7 +4,7 @@ import { LineChart } from "react-native-gifted-charts"
 import style from "../../style"
 import Howtouse from "../Howtouse";
 
-export default function LineChartComponent({ lineData, status, status2, showknowledge }) {
+export default function LineChartComponent({ lineData, status, status2, showknowledge, navigation }) {
 
     return (
         <View style={styles.container}>

@@ -88,7 +88,7 @@ export default function App() {
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="test-tube" style={styles.BarStyle.iconBar} size={40} color={color} />
                         )}}>
-                        {() => <Test status={status} lineData={lineData} status2={status2} showknowledge={showknowledge} />}
+                        {({ navigation }) => <Test navigation={navigation} status={status} lineData={lineData} status2={status2} showknowledge={showknowledge} />}
                     </Tab.Screen>
 
                     {/*        Game       */}
