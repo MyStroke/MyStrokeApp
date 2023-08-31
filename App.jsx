@@ -80,7 +80,7 @@ export default function App() {
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="home-circle" style={styles.BarStyle.iconBar} size={40} color={color} />
                         )}} >
-                        {() => <Home status={status} status2={status2} />}
+                        {({ navigation }) => <Home navigation={navigation} showknowledge={showknowledge} status={status} status2={status2} />}
                     </Tab.Screen>
 
                     {/*         Test         */}

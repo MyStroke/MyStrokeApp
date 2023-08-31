@@ -32,4 +32,25 @@ export default StyleSheet.create({
         },
         headerShown: false,
     },
+    Homenotstatus: {
+        alignItems: "center",
+        justifyContent: "center",
+        text: {
+            marginBottom: 20,
+            fontSize: 20,
+        },
+        btn: {
+            backgroundColor: "#160F29",
+            borderRadius: 10,
+            width: 200,
+            height: 50,
+            alignItems: "center",
+            justifyContent: "center",
+
+            text: {
+                color: "#F3DFC1",
+                fontSize: 15,
+            }
+        }
+    },
 });

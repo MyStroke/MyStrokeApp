@@ -1,56 +1,67 @@
 import React from "react";
-import { View, StyleSheet, Text } from "react-native";
+import { View, StyleSheet, Text, Pressable } from "react-native";
 import { LineChart } from "react-native-gifted-charts"
+import style from "../../style"
 
 export default function LineChartComponent({ lineData, status, status2, showknowledge }) {
 
     return (
         <View style={styles.container}>
-            {/*         Graph        */}
-            <View style={styles.graph}>
-                <LineChart
-                    dataPointsColor="yellow"
-                    thickness={6}
-                    color="#07BAD1"
-                    noOfSections={2}
-                    isAnimated
-                    areaChart
-                    yAxisTextStyle={{ color: '#1F1639' }}
-                    hideRules
-                    data={lineData}
-                    curved
-                    startFillColor={'rgb(84,219,234)'}
-                    endFillColor={'rgb(84,219,234)'}
-                    startOpacity={0.4}
-                    endOpacity={0.4}
-                    spacing={38}
-                    backgroundColor="#1F1639"
-                    initialSpacing={10}
-                    dataPointsHeight={20}
-                    dataPointsWidth={20}
-                    width={250}
-                />
-            </View>
-            {/*         box          */}
             {showknowledge ? (
-                <View style={styles.box}>
-                    <View style={{ flex: 1, marginTop: "8%",  }}>
-                        <Text style={styles.box.text}>You are in</Text>
-                        <Text style={styles.box.status}>
-                            {status}
-                        </Text>
-                        <Text style={styles.box.text}>Condition</Text>
+                <View style={styles.container}>
+                    {/*         Graph        */}
+                    <View style={styles.graph}>
+                        <LineChart
+                            dataPointsColor="yellow"
+                            thickness={6}
+                            color="#07BAD1"
+                            noOfSections={2}
+                            isAnimated
+                            areaChart
+                            yAxisTextStyle={{ color: '#1F1639' }}
+                            hideRules
+                            data={lineData}
+                            curved
+                            startFillColor={'rgb(84,219,234)'}
+                            endFillColor={'rgb(84,219,234)'}
+                            startOpacity={0.4}
+                            endOpacity={0.4}
+                            spacing={38}
+                            backgroundColor="#1F1639"
+                            initialSpacing={10}
+                            dataPointsHeight={20}
+                            dataPointsWidth={20}
+                            width={250}
+                        />
                     </View>
-                    <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                        <Text style={styles.box.status2}>{status2}</Text>
+                    {/*         box          */}
+                    <View style={styles.box}>
+                        <View style={{ flex: 1, marginTop: "8%", }}>
+                            <Text style={styles.box.text}>You are in</Text>
+                            <Text style={styles.box.status}>
+                                {status}
+                            </Text>
+                            <Text style={styles.box.text}>Condition</Text>
+                        </View>
+                        <View style={{ flex: 1, justifyContent: 'flex-end' }}>
+                            <Text style={styles.box.status2}>{status2}</Text>
+                        </View>
+                    </View>
+                    {/*         History      */}
+                    <View style={styles.History}>
+                        <Text style={{ color: "#F3DFC1", fontSize: 20, textAlign: "center", padding: 10, }}>ประวัติการรักษา</Text>
                     </View>
                 </View>
-            ) : null
-            }
-            {/*         History      */}
-            <View style={styles.History}>
-                <Text style={{ color: "#F3DFC1", fontSize: 20, textAlign: "center", padding: 10, }}>ประวัติการรักษา</Text>
-            </View>
+            ) : (
+                <View>
+                    <Text style={style.Homenotstatus.text}>คุณยังไม่ได้เริ่มการบำบัดครั้งแรก</Text>
+                    <View style={style.Homenotstatus}>
+                        <Pressable style={style.Homenotstatus.btn} onPress={() => navigation.navigate("Game")}>
+                            <Text style={style.Homenotstatus.btn.text}>ไปหน้าเล่นเกม</Text>
+                        </Pressable>
+                    </View>
+                </View>
+            )}
         </View>
     );
 }
