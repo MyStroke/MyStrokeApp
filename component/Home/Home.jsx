@@ -1,17 +1,15 @@
 import React from "react";
-import { View, Text, Image, TouchableOpacity, Modal, Pressable } from "react-native";
+import { View, Text, Image, Pressable } from "react-native";
 import { StyleSheet } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import style from "../../style";
 
 // Icon
-import { AntDesign } from '@expo/vector-icons';
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BarChart } from "react-native-gifted-charts";
+import Howtouse from "../Howtouse";
 
 export default function Home({ status, status2, navigation, showknowledge }) {
-    const [modalVisible, setModalVisible] = React.useState(false);
-
     const data = [
         { value: 30, label: '27', frontColor: '#368F8B' },
         { value: 15, label: '28', frontColor: '#FF0000' },
@@ -95,30 +93,7 @@ export default function Home({ status, status2, navigation, showknowledge }) {
                     </View>
                 </View>
             )}
-            {/*     How to Use    */}
-            <TouchableOpacity style={styles.HowToUse} onPress={() => setModalVisible(true)}>
-                <AntDesign name="questioncircleo" style={styles.HowToUse.icon} />
-            </TouchableOpacity>
-            {/*     Model    */}
-            <Modal visible={modalVisible}>
-                {/*     Model Container    */}
-                <View style={styles.model.container}>
-                    <Text style={{ color: "#F3DFC1", fontSize: 30, }}>วิธีการใช้งาน</Text>
-                    <View style={{ padding: 20, }}>
-                        <Text style={styles.model.text}>การเชื่อมต่อกับอุปกรณ์</Text>
-                        <View style={{ marginTop: 20, }}>
-                            <Text style={styles.model.text}>หน้าหลัก</Text>
-                        </View>
-                        <View style={{ marginTop: 20, }}>
-                            <Text style={styles.model.text}>การบำบัดด้วยเกม</Text>
-                        </View>
-                    </View>
-                </View>
-                {/*     How to Use    */}
-                <TouchableOpacity style={styles.HowToUse} onPress={() => setModalVisible(false)}>
-                    <AntDesign name="questioncircleo" style={styles.model.HowToUse.icon} />
-                </TouchableOpacity>
-            </Modal>
+            <Howtouse />
         </View>
     );
 }
@@ -179,47 +154,6 @@ const styles = StyleSheet.create({
     IconStyle: {
         width: 128,
         height: 128,
-    },
-    HowToUse: {
-        width: 40,
-        height: 40,
-        borderRadius: 100,
-        position: "absolute",
-        top: 10,
-        right: 10,
-        icon: {
-            color: "#246A73",
-            fontSize: 35,
-            fontWeight: "bold",
-            textAlign: "center",
-        }
-    },
-    model: {
-        container: {
-            backgroundColor: "#246A73",
-            width: wp('100%'),
-            height: hp('100%'),
-            position: "relative",
-            padding: 50,
-        },
-        HowToUse: {
-            width: 40,
-            height: 40,
-            borderRadius: 100,
-            position: "absolute",
-            top: 10,
-            right: 10,
-            icon: {
-                color: "#F3DFC1",
-                fontSize: 35,
-                fontWeight: "bold",
-                textAlign: "center",
-            }
-        },
-        text: {
-            color: "#F3DFC1",
-            fontSize: 20,
-        },
     },
     warn: {
         width: wp("100%"),

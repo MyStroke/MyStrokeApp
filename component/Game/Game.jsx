@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
 import Time from "./Time";
 import Graph from "./Graph";
+import Howtouse from "../Howtouse";
 
 export default function Game({ updateScoreData }) {
     const [topscore, setTopscore] = useState(0)
@@ -18,6 +19,7 @@ export default function Game({ updateScoreData }) {
             <Text style={{fontSize: 30}}>Topscore: {topscore}</Text>
             <Graph />
             <Time updateScoreData={updateScoreData} Score={Score} setScore={setScore} />
+            <Howtouse />
         </View>
     );
 }

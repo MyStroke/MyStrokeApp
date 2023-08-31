@@ -1,4 +1,5 @@
 import { StyleSheet } from "react-native";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 
 export default StyleSheet.create({
     style: {
@@ -52,5 +53,46 @@ export default StyleSheet.create({
                 fontSize: 15,
             }
         }
+    },
+    HowToUse: {
+        width: 40,
+        height: 40,
+        borderRadius: 100,
+        position: "absolute",
+        top: 10,
+        right: 10,
+        icon: {
+            color: "#246A73",
+            fontSize: 35,
+            fontWeight: "bold",
+            textAlign: "center",
+        },
+        model: {
+            container: {
+                backgroundColor: "#246A73",
+                width: wp('100%'),
+                height: hp('100%'),
+                position: "relative",
+                padding: 50,
+            },
+            HowToUse: {
+                width: 40,
+                height: 40,
+                borderRadius: 100,
+                position: "absolute",
+                top: 10,
+                right: 10,
+                icon: {
+                    color: "#F3DFC1",
+                    fontSize: 35,
+                    fontWeight: "bold",
+                    textAlign: "center",
+                }
+            },
+            text: {
+                color: "#F3DFC1",
+                fontSize: 20,
+            },
+        },
     },
 });
