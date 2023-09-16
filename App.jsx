@@ -17,16 +17,15 @@ export default function App() {
     const Tab = createBottomTabNavigator();
 
     const [isLoading, setIsLoading] = useState(true);
-    const [scoreData, setScoreData] = useState([]);
+    const [scoreData, setScoreData] = useState([0]);
     const [status, setstatus] = React.useState("");
     const [status2, setstatus2] = React.useState("");
     const [showknowledge, setShowknowledge] = React.useState(false);
 
-    let lineData = [{ value: 0, dataPointText: 0 }];
-    lineData = scoreData.map((score) => ({ value: score, dataPointText: score }));
+    let lineData = scoreData.map((score) => ({ value: score, dataPointText: score }));
 
     const showstatus = () => {
-        if (lineData.length > 0) {
+        if (lineData.length > 1) {
             setShowknowledge(true);
             const latestData = lineData[lineData.length - 1]; // ดึงค่าล่าสุดจากอาร์เรย์
             if (latestData.value > 29) {
@@ -62,7 +61,13 @@ export default function App() {
     }, []);
 
     const updateScoreData = (score) => {
-        setScoreData((prevScoreData) => [...prevScoreData, score]);
+        const lastScore = scoreData.pop();
+
+        if (lastScore !== score) {
+            setScoreData((prevScoreData) => [...prevScoreData, lastScore, score]);
+        } else {
+            setScoreData((prevScoreData) => [...prevScoreData, score]);
+        }
     };
 
     return (
@@ -88,7 +93,7 @@ export default function App() {
                         tabBarIcon: ({ color }) => (
                             <MaterialCommunityIcons name="test-tube" style={styles.BarStyle.iconBar} size={40} color={color} />
                         )}}>
-                        {({ navigation }) => <Test navigation={navigation} status={status} lineData={lineData} status2={status2} showknowledge={showknowledge} />}
+                        {({ navigation }) => <Test navigation={navigation} status={status} lineData={lineData} status2={status2} showknowledge={showknowledge} scoreData={scoreData} />}
                     </Tab.Screen>
 
                     {/*        Game       */}

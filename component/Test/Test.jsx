@@ -4,7 +4,7 @@ import { LineChart } from "react-native-gifted-charts"
 import style from "../../style"
 import Howtouse from "../Howtouse";
 
-export default function LineChartComponent({ lineData, status, status2, showknowledge, navigation }) {
+export default function LineChartComponent({ lineData, status, status2, showknowledge, navigation, scoreData }) {
 
     return (
         <View style={styles.container}>
@@ -48,10 +48,6 @@ export default function LineChartComponent({ lineData, status, status2, showknow
                             <Text style={styles.box.status2}>{status2}</Text>
                         </View>
                     </View>
-                    {/*         History      */}
-                    <View style={styles.History}>
-                        <Text style={{ color: "#F3DFC1", fontSize: 20, textAlign: "center", padding: 10, }}>ประวัติการรักษา</Text>
-                    </View>
                 </View>
             ) : (
                 <View>
@@ -63,7 +59,13 @@ export default function LineChartComponent({ lineData, status, status2, showknow
                     </View>
                 </View>
             )}
+            {/*         How to use       */}
             <Howtouse />
+            {showknowledge ? (
+                <View style={styles.History}>
+                    <Text style={{ color: "#F3DFC1", fontSize: 20, textAlign: "center", padding: 10, }}>ประวัติการรักษา</Text>
+                </View> 
+            ) : null}
         </View>
     );
 }
