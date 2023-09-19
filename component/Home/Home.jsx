@@ -4,6 +4,8 @@ import { StyleSheet } from "react-native";
 import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-native-responsive-screen';
 import style from "../../style";
 
+import Camerapage from '../Camera/Camera'
+
 // Icon
 import { MaterialCommunityIcons } from '@expo/vector-icons';
 import { BarChart } from "react-native-gifted-charts";
@@ -92,6 +94,7 @@ export default function Home({ status, status2, navigation, showknowledge }) {
                         </Pressable>
                     </View>
                 </View>
+                // <Camerapage /> // Test Camera
             )}
             <Howtouse />
         </View>
