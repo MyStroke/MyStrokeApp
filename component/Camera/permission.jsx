@@ -3,7 +3,7 @@ import { Camera } from 'expo-camera';
 
 export default async function permission() {
 
-    let { status } = await Camera.requestPermissionsAsync()
+    let { status } = await Camera.requestCameraPermissionsAsync()
 
     if (status === 'granted') {
         return true
