@@ -5,6 +5,8 @@ node_modules/
 android/
 ios/
 
+component/Game/Bluetooth/
+
 # Expo
 .expo/
 dist/
