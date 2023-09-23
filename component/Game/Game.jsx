@@ -1,5 +1,8 @@
 import React, { useState } from "react";
 import { View, Text, Button, StyleSheet } from "react-native";
+import { widthPercentageToDP as wp, heightPercentageToDP as hp }  from "react-native-responsive-screen";
+import { WebView } from 'react-native-webview';
+
 import Time from "./Time";
 import Graph from "./Graph";
 import Howtouse from "../Howtouse";
@@ -16,9 +19,10 @@ export default function Game({ updateScoreData }) {
 
     return (
         <View style={styles.container}>
-            <Text style={{fontSize: 30}}>Topscore: {topscore}</Text>
+            {/* <Text style={{fontSize: 30}}>Topscore: {topscore}</Text>
             <Graph />
-            <Time updateScoreData={updateScoreData} Score={Score} setScore={setScore} />
+            <Time updateScoreData={updateScoreData} Score={Score} setScore={setScore} /> */}
+            <WebView source={{ uri: 'https://th.y8.com/games/bouncy_musical_ball' }} style={{width: wp("100%")}} />
             <Howtouse />
         </View>
     );
