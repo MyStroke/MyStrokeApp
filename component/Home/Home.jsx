@@ -5,7 +5,7 @@ import { widthPercentageToDP as wp, heightPercentageToDP as hp } from 'react-nat
 import style from "../../style";
 
 import Camerapage from '../Camera/Camera'
-import Bluetooth from "../Game/Bluetooth/Bluetooth";
+// import Bluetooth from "../Game/Bluetooth/Bluetooth";
 
 // Icon
 import { MaterialCommunityIcons } from '@expo/vector-icons';
