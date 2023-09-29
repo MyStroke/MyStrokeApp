@@ -36,11 +36,17 @@ export default function Game({ updateScoreData }) {
     // รับคะแนนจาก firebase
     useEffect(() => {
         const db = firebase.firestore();
-        db.collection("user-score").get().then((score) => {
-            score.forEach((doc) => {
-                updateScoreData((doc.data().score))
+        db.collection("user-score").onSnapshot((querySnapshot) => {
+            const updatedData = [];
+            querySnapshot.forEach((doc) => {
+                for (let key in doc.data()) {
+                    updatedData.push(doc.data()[key]);
+                    updateScoreData(doc.data()[key]);
+                }
             });
-        } );
+            
+            console.log("Updated data:", updatedData);
+        });
     }, []);
 
     return (
