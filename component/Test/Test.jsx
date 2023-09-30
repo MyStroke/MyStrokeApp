@@ -13,6 +13,7 @@ export default function LineChartComponent({ lineData, status, status2, showknow
                     {/*         Graph        */}
                     <View style={styles.graph}>
                         <LineChart
+                            key={Reflect.ownKeys(scoreData).length}
                             dataPointsColor="yellow"
                             thickness={6}
                             color="#07BAD1"
