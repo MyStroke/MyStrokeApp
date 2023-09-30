@@ -64,7 +64,7 @@ export default function App() {
         const lastScore = scoreData.pop();
 
         if (lastScore !== score) {
-            setScoreData((prevScoreData) => [...prevScoreData, lastScore, score]);
+            setScoreData((prevScoreData) => [...prevScoreData, score]);
         } else {
             setScoreData((prevScoreData) => [...prevScoreData, score]);
         }
