@@ -37,23 +37,18 @@ export default function Game({ updateScoreData }) {
     useEffect(() => {
         const db = firebase.firestore();
         db.collection("user-score").onSnapshot((querySnapshot) => {
-            const updatedData = [];
             querySnapshot.forEach((doc) => {
                 for (let key in doc.data()) {
-                    updatedData.push(doc.data()[key]);
-                    updateScoreData(doc.data()[key]);
+                    const value = doc.data()[key];
+                    updateScoreData(value);
                 }
             });
-            
-            console.log("Updated data:", updatedData);
         });
     }, []);
+    
 
     return (
         <View style={styles.container}>
-            {/* <Text style={{fontSize: 30}}>Topscore: {topscore}</Text>
-            <Graph />
-            <Time updateScoreData={updateScoreData} Score={Score} setScore={setScore} /> */}
             <WebView source={{ uri: 'https://effulgent-chebakia-76c57d.netlify.app/' }}
                 style={{ width: wp("100%") }}
                 originWhitelist={['*']}

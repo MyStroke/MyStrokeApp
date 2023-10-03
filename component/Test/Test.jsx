@@ -14,6 +14,7 @@ export default function LineChartComponent({ lineData, status, status2, showknow
                     <View style={styles.graph}>
                         <LineChart
                             key={Reflect.ownKeys(scoreData).length}
+                            scrollToEnd={true}
                             dataPointsColor="yellow"
                             thickness={6}
                             color="#07BAD1"
