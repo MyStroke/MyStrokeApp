@@ -38,13 +38,19 @@ export default function Game({ updateScoreData }) {
         const db = firebase.firestore();
         db.collection("user-score").onSnapshot((querySnapshot) => {
             querySnapshot.forEach((doc) => {
-                for (let key in doc.data()) {
-                    const value = doc.data()[key];
-                    updateScoreData(value);
+
+                if (Array.isArray(doc.data().score)) {
+                    const scores = doc.data().score;
+
+                    for (let key in scores) {
+                        // console.log(scores[key]);
+                        updateScoreData(scores[key]);
+                    }
                 }
             });
         });
     }, []);
+    
     
 
     return (
