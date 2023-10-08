@@ -41,7 +41,7 @@ export default function Game({ updateScoreData }) {
             querySnapshot.forEach((doc) => {
 
                 if (Array.isArray(doc.data().score)) {
-                    const scores = doc.data().score.map(item => item.score);
+                    const scores = doc.data().score.map(item => item.playerScore);
                     for (let key in scores) {
                         // console.log(scores[key]);
                         updateScoreData(scores[key]);
@@ -53,7 +53,7 @@ export default function Game({ updateScoreData }) {
 
     return (
         <View style={styles.container}>
-            <WebView source={{ uri: 'https://effulgent-chebakia-76c57d.netlify.app/' }}
+            <WebView source={{ uri: 'https://mystroke-game.netlify.app/' }}
                 style={{ width: wp("100%") }}
                 originWhitelist={['*']}
                 allowsInlineMediaPlayback
