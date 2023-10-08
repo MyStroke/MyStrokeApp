@@ -20,9 +20,10 @@ export default function Game({ updateScoreData }) {
         setTopscore(Score);
     }
 
-    useEffect(() => { (async () => {
-        const { status } = await Camera.requestCameraPermissionsAsync();
-        setHasPermission(status === 'granted');
+    useEffect(() => {
+        (async () => {
+            const { status } = await Camera.requestCameraPermissionsAsync();
+            setHasPermission(status === 'granted');
         })();
     }, []);
 
@@ -40,8 +41,7 @@ export default function Game({ updateScoreData }) {
             querySnapshot.forEach((doc) => {
 
                 if (Array.isArray(doc.data().score)) {
-                    const scores = doc.data().score;
-
+                    const scores = doc.data().score.map(item => item.score);
                     for (let key in scores) {
                         // console.log(scores[key]);
                         updateScoreData(scores[key]);
@@ -50,8 +50,6 @@ export default function Game({ updateScoreData }) {
             });
         });
     }, []);
-    
-    
 
     return (
         <View style={styles.container}>
