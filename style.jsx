@@ -93,6 +93,18 @@ export default StyleSheet.create({
                 color: "#F3DFC1",
                 fontSize: 20,
             },
+            image: {
+                width: wp('50%'),
+                height: hp('50%'),
+                resizeMode: "contain",
+                marginTop: 20,
+            },
+            image2: {
+                width: wp('50%'),
+                height: hp('50%'),
+                resizeMode: "contain",
+                marginTop: 20,
+            },
         },
     },
 });
