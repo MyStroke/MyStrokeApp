@@ -53,7 +53,7 @@ export default function Game({ updateScoreData }) {
 
     return (
         <View style={styles.container}>
-            <WebView source={{ uri: 'https://mystroke-game.netlify.app/' }}
+            <WebView source={{ uri: 'https://mystroke-game.onrender.com/' }}
                 style={{ width: wp("100%") }}
                 originWhitelist={['*']}
                 allowsInlineMediaPlayback
