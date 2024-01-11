@@ -53,7 +53,7 @@ export default function Game({ updateScoreData }) {
 
     return (
         <View style={styles.container}>
-            <WebView source={{ uri: 'https://mystroke-game.onrender.com/' }}
+            <WebView source={{ uri: 'https://mystroke.github.io/MyStroke-Game-WebGL/' }}
                 style={{ width: wp("100%") }}
                 originWhitelist={['*']}
                 allowsInlineMediaPlayback
