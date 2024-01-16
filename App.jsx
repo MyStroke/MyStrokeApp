@@ -2,6 +2,7 @@ import React, { useState, useEffect } from 'react';
 import styles from './style';
 import { NavigationContainer } from '@react-navigation/native';
 import { createBottomTabNavigator } from '@react-navigation/bottom-tabs';
+import { useFonts } from 'expo-font';
 
 // เพิ่ม Icon ที่จะนำมาใช้งาน
 import { MaterialCommunityIcons } from '@expo/vector-icons';
@@ -21,6 +22,10 @@ export default function App() {
     const [status, setstatus] = React.useState("");
     const [status2, setstatus2] = React.useState("");
     const [showknowledge, setShowknowledge] = React.useState(false);
+
+    const [fontsLoaded, fontError] = useFonts({
+        'IBMPlexSansThai-Medium': require('./assets/fonts/IBMPlexSansThai-Medium.ttf'),
+    });
 
     let lineData = scoreData.map((score) => ({ value: score, dataPointText: score }));
 
