@@ -19,19 +19,30 @@ export default function Howtouse() {
 
                 {/*     Model Container    */}
                 <ScrollView style={style.HowToUse.model.container}>
-                    <Text style={{ color: "#F3DFC1", fontSize: 30, }}>วิธีการใช้งาน</Text>
+                    <Text style={{ color: "#F3DFC1", fontSize: 30, fontFamily: "IBMPlexSansThai-Medium", }}>
+                        วิธีการใช้งาน
+                    </Text>
                     <View style={{ padding: 20, }}>
 
-                        <Text style={style.HowToUse.model.text}>หากคุณยังไม่เคยเล่น</Text>
+                        <Text style={[style.HowToUse.model.text, {fontFamily: "IBMPlexSansThai-Medium",}]}>
+                            หากคุณยังไม่เคยเล่น
+                        </Text>
+
                         <Image source={require("../data/Howtouse/1.jpeg")} style={style.HowToUse.model.image} />
 
                         <View style={{ marginTop: 20, }}>
-                            <Text style={style.HowToUse.model.text}>วิธีการเล่น</Text>
+                            <Text style={[style.HowToUse.model.text, {fontFamily: "IBMPlexSansThai-Medium",}]}>
+                                วิธีการเล่น
+                            </Text>
                         </View>
 
                         <View style={{ marginTop: 20, }}>
-                            <Text style={style.HowToUse.model.text}>ดูผลการทดสอบ</Text>
-                            <View>
+
+                            <Text style={[style.HowToUse.model.text, {fontFamily: "IBMPlexSansThai-Medium",}]}>
+                                ดูผลการทดสอบ
+                            </Text>
+
+                            <View style={{marginBottom: 50}}>
                                 <Image source={require("../data/Howtouse/3-1.jpeg")} style={style.HowToUse.model.image} />
                                 <Image source={require("../data/Howtouse/3-2.jpeg")} style={style.HowToUse.model.image} />
                             </View>

@@ -41,22 +41,29 @@ export default function LineChartComponent({ lineData, status, status2, showknow
                     <View style={styles.box}>
                         <View style={{ flex: 1, marginTop: "8%", }}>
                             <Text style={styles.box.text}>You are in</Text>
-                            <Text style={styles.box.status}>
+                            <Text style={[styles.box.status, {fontFamily: "IBMPlexSansThai-Medium",}]}>
                                 {status}
                             </Text>
-                            <Text style={styles.box.text}>Condition</Text>
+                            <Text style={[styles.box.text, {marginTop: -10}]}>Condition</Text>
                         </View>
                         <View style={{ flex: 1, justifyContent: 'flex-end' }}>
-                            <Text style={styles.box.status2}>{status2}</Text>
+                            <Text style={[styles.box.status2, {fontFamily: "IBMPlexSansThai-Medium",}]}>
+                                {status2}
+                            </Text>
                         </View>
                     </View>
                 </View>
             ) : (
                 <View>
-                    <Text style={style.Homenotstatus.text}>คุณยังไม่ได้เริ่มการบำบัดครั้งแรก</Text>
+                    <Text style={[style.Homenotstatus.text, {fontFamily: "IBMPlexSansThai-Medium",}]}>
+                        คุณยังไม่ได้เริ่มการบำบัดครั้งแรก
+                    </Text>
+
                     <View style={style.Homenotstatus}>
                         <Pressable style={style.Homenotstatus.btn} onPress={() => navigation.navigate("Game")}>
-                            <Text style={style.Homenotstatus.btn.text}>ไปหน้าเล่นเกม</Text>
+                            <Text style={[style.Homenotstatus.btn.text, {fontFamily: "IBMPlexSansThai-Medium",}]}>
+                                ไปหน้าเล่นเกม
+                            </Text>
                         </Pressable>
                     </View>
                 </View>
@@ -65,7 +72,9 @@ export default function LineChartComponent({ lineData, status, status2, showknow
             <Howtouse />
             {showknowledge ? (
                 <View style={styles.History}>
-                    <Text style={{ color: "#F3DFC1", fontSize: 20, textAlign: "center", padding: 10, }}>ประวัติการรักษา</Text>
+                    <Text style={{ color: "#F3DFC1", fontSize: 20, textAlign: "center", padding: 10, fontFamily: "IBMPlexSansThai-Medium", }}>
+                        ประวัติการรักษา
+                    </Text>
                 </View> 
             ) : null}
         </View>

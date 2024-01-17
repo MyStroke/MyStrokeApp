@@ -45,12 +45,12 @@ export default function Home({ status, status2, navigation, showknowledge }) {
                     {/*     Box Status   */}
                     <View style={styles.box}>
                         <Text style={styles.box.text}>You are in</Text>
-                        <Text style={styles.box.status}>{status}</Text>
+                        <Text style={[styles.box.status, {fontFamily: "IBMPlexSansThai-Medium",}]}>{status}</Text>
                         <Text style={styles.box.text}>Condition</Text>
                     </View>
                     {/*     Status2    */}
                     <View style={{ marginTop: 20, }}>
-                        <Text style={styles.status}>{status2}</Text>
+                        <Text style={[styles.status, {fontFamily: "IBMPlexSansThai-Medium",}]}>{status2}</Text>
                     </View>
                     {/*     Graph Date   */}
                     <View style={{ marginTop: 20, }}>
@@ -72,26 +72,45 @@ export default function Home({ status, status2, navigation, showknowledge }) {
 
                         {/*     Water   */}
                         <View style={{ width: "50%", padding: 5, }}>
-                            <Text style={{ fontSize: 20, paddingBottom: 5, }}><MaterialCommunityIcons name="water-plus" size={24} color="#246A73" /> อย่าลืมดื่มน้ำ</Text>
-                            <Text>รู้ไหมว่าการดื่มน้ำมีส่วนช่วยในการทำงานของระบบประสาท</Text>
+
+                            <Text style={{ fontSize: 20, paddingBottom: 5, fontFamily: "IBMPlexSansThai-Medium", }}>
+                                <MaterialCommunityIcons name="water-plus" size={24} color="#246A73" /> 
+                                อย่าลืมดื่มน้ำ
+                            </Text>
+
+                            <Text style={{fontFamily: "IBMPlexSansThai-Medium",}}>
+                                รู้ไหมว่าการดื่มน้ำมีส่วนช่วยในการทำงานของระบบประสาท
+                            </Text>
+
                         </View>
 
                         <Text style={{ width: 3, height: 110, flexShrink: 0, backgroundColor: "#246A73" }}></Text>
 
                         {/*     walk     */}
                         <View style={{ width: "50%", padding: 5, marginLeft: 20, }}>
-                            <Text style={{ fontSize: 20, paddingBottom: 5, }}><MaterialCommunityIcons name="walk" size={24} color="#246A73" /> หมั่นเดินบ้าง</Text>
-                            <Text>รู้ไหมว่าการเดินมีส่วนช่วยในการทำงานของระบบประสาท</Text>
+
+                            <Text style={{ fontSize: 20, paddingBottom: 5, fontFamily: "IBMPlexSansThai-Medium", }}>
+                                <MaterialCommunityIcons name="walk" size={24} color="#246A73" /> 
+                                หมั่นเดินบ้าง
+                            </Text>
+
+                            <Text style={{fontFamily: "IBMPlexSansThai-Medium",}}>
+                                รู้ไหมว่าการเดินมีส่วนช่วยในการทำงานของระบบประสาท
+                            </Text>
+
                         </View>
 
                     </View>
                 </View>
             ) : (
                 <View>
-                    <Text style={style.Homenotstatus.text}>คุณยังไม่ได้เริ่มการบำบัดครั้งแรก</Text>
+                    <Text style={[style.Homenotstatus.text, {fontFamily: "IBMPlexSansThai-Medium",}]}>คุณยังไม่ได้เริ่มการบำบัดครั้งแรก</Text>
+                    
                     <View style={style.Homenotstatus}>
                         <Pressable style={style.Homenotstatus.btn} onPress={() => navigation.navigate("Game")}>
-                            <Text style={style.Homenotstatus.btn.text}>ไปหน้าเล่นเกม</Text>
+                            <Text style={[style.Homenotstatus.btn.text, {fontFamily: "IBMPlexSansThai-Medium",}]}>
+                                ไปหน้าเล่นเกม
+                            </Text>
                         </Pressable>
                     </View>
                 </View>
