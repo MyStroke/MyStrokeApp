@@ -13,3 +13,6 @@ npm start
 # หรือ
 expo start
 ```
+
+## โหลด APK
+[MyStrokeApp.apk](https://github.com/MyStroke/MyStrokeApp/blob/main/Build/MyStrokeApp.apk)
