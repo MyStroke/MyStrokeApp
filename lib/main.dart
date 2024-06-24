@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'package:mystroke_app/login_face.dart';
+import 'package:mystroke_app/page/login_face.dart';
 
 void main() {
   runApp(const MyApp());
