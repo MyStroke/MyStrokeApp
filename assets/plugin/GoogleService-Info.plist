@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+	<key>API_KEY</key>
+	<string>AIzaSyAVdDwwYxt0rw2jmK2IA2aMikLMyPEvdxw</string>
+	<key>GCM_SENDER_ID</key>
+	<string>568348724078</string>
+	<key>PLIST_VERSION</key>
+	<string>1</string>
+	<key>BUNDLE_ID</key>
+	<string>com.example.mystrokeApp</string>
+	<key>PROJECT_ID</key>
+	<string>mystroke-c4378</string>
+	<key>STORAGE_BUCKET</key>
+	<string>mystroke-c4378.appspot.com</string>
+	<key>IS_ADS_ENABLED</key>
+	<false></false>
+	<key>IS_ANALYTICS_ENABLED</key>
+	<false></false>
+	<key>IS_APPINVITE_ENABLED</key>
+	<true></true>
+	<key>IS_GCM_ENABLED</key>
+	<true></true>
+	<key>IS_SIGNIN_ENABLED</key>
+	<true></true>
+	<key>GOOGLE_APP_ID</key>
+	<string>1:568348724078:ios:e63e13067c73f7b26b0f7f</string>
+</dict>
+</plist>

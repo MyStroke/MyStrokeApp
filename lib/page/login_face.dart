@@ -34,13 +34,26 @@ class LoginFaceScreen extends StatelessWidget {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               children: [
+                // Header text
+                const Text(
+                  "เข้าสู่ระบบ",
+                  style: TextStyle(
+                    fontSize: 28,
+                    color: Colors.white,
+                    fontWeight: FontWeight.bold,
+                    fontFamily: "Prompt",
+                  ),
+                ),
+
+                const SizedBox(height: 75),
+
                 // Face icon
                 Image.asset(
                   "assets/login_face/face_icon.png",
                   width: 200,
                 ),
 
-                const SizedBox(height: 50), 
+                const SizedBox(height: 75), 
 
                 // Text title
                 const Text(
@@ -74,17 +87,17 @@ class LoginFaceScreen extends StatelessWidget {
                   // Button style
                   style: ButtonStyle(
                     // Background color none
-                    backgroundColor: WidgetStateProperty.all<Color>(Colors.transparent),
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
 
                     // Border radius
-                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
 
                     // Border
-                    side: WidgetStateProperty.all<BorderSide>(
+                    side: MaterialStateProperty.all<BorderSide>(
                       const BorderSide(
                         color: Color.fromRGBO(79, 121, 201, 1),
                         width: 1,
@@ -92,10 +105,10 @@ class LoginFaceScreen extends StatelessWidget {
                     ),
 
                     // Shadow
-                    elevation: WidgetStateProperty.all<double>(0),
+                    elevation: MaterialStateProperty.all<double>(0),
 
                     // Width
-                    fixedSize: WidgetStateProperty.all<Size>(const Size(300, 50)),
+                    fixedSize: MaterialStateProperty.all<Size>(const Size(300, 50)),
                   ),
 
                   // Button content
@@ -125,25 +138,27 @@ class LoginFaceScreen extends StatelessWidget {
 
                 // Button move to login page.
                 ElevatedButton(onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => const LoginForm()),
-                  );
-                }, 
+                    // Move to login page with route
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LoginForm()),
+                    );
+                  },
+
                   // Button style
                   style: ButtonStyle(
                     // Background color none
-                    backgroundColor: WidgetStateProperty.all<Color>(Colors.transparent),
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
 
                     // Border radius
-                    shape: WidgetStateProperty.all<RoundedRectangleBorder>(
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
 
                     // Border
-                    side: WidgetStateProperty.all<BorderSide>(
+                    side: MaterialStateProperty.all<BorderSide>(
                       const BorderSide(
                         color: Color.fromRGBO(79, 121, 201, 1),
                         width: 1,
@@ -151,10 +166,10 @@ class LoginFaceScreen extends StatelessWidget {
                     ),
 
                     // Shadow
-                    elevation: WidgetStateProperty.all<double>(0),
+                    elevation: MaterialStateProperty.all<double>(0),
 
                     // Width
-                    fixedSize: WidgetStateProperty.all<Size>(const Size(300, 50)),
+                    fixedSize: MaterialStateProperty.all<Size>(const Size(300, 50)),
                   ),
                   
                   child: const Text("เข้าสู่ระบบด้วยบัญชี",
