@@ -1,4 +1,9 @@
+import 'package:mystroke_app/service/auth_exception.dart';
+import '../service/auth_service.dart';
+
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:flutter/material.dart';
+
 import 'login_face.dart';
 
 class LoginForm extends StatelessWidget {
@@ -21,7 +26,24 @@ class LoginFormScreen extends StatefulWidget {
 
 class _LoginFormScreen extends State<LoginFormScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _emailController = TextEditingController();
+  final _passwordController = TextEditingController();
   bool _obscureText = true;
+
+  // Login function
+  void handleLogin() {
+    AuthService().loginWithEmailAndPassword(
+      email: _emailController.text, 
+      password: _passwordController.text
+    ).then((status) {
+      if (status == AuthResultStatus.successful) {
+        Fluttertoast.showToast(msg: "เข้าสู่ระบบสำเร็จ");
+      } else {
+        final errorMsg = AuthExceptionHandler.errorMessage(status);
+        Fluttertoast.showToast(msg: errorMsg);
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -76,9 +98,10 @@ class _LoginFormScreen extends State<LoginFormScreen> {
                       SizedBox(
                         width: 350,
                         child: TextFormField(
+                          controller: _emailController,
                           obscureText: false,
                           decoration: const InputDecoration(
-                            hintText: 'กรอกอีเมลหรือชื่อผู้ใช้',
+                            hintText: 'กรอกอีเมลผู้ใช้',
                             hintStyle: TextStyle(color: Colors.white),
                             border: OutlineInputBorder(
                               borderRadius: BorderRadius.all(Radius.circular(10)),
@@ -91,12 +114,27 @@ class _LoginFormScreen extends State<LoginFormScreen> {
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               borderSide: BorderSide(color: Color.fromRGBO(35, 47, 63, 1), width: 3),
                             ),
+
+                            // Validate
+                            errorStyle: TextStyle(
+                              fontFamily: "Prompt",
+                            ),
                           ),
+                          
+                          // Style
                           style: const TextStyle(
                             color: Colors.white,
                             // fontSize: 12,
                             fontFamily: "Prompt",
                           ),
+                          
+                          // Validate
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'กรุณากรอกอีเมลผู้ใช้';
+                            }
+                            return null;
+                          },
                         ),
                       ),
 
@@ -106,6 +144,7 @@ class _LoginFormScreen extends State<LoginFormScreen> {
                       SizedBox(
                         width: 350,
                         child: TextFormField(
+                          controller: _passwordController,
                           obscureText: _obscureText,
                           decoration: InputDecoration(
                             hintText: 'กรอกรหัสผ่าน',
@@ -133,6 +172,11 @@ class _LoginFormScreen extends State<LoginFormScreen> {
                               borderRadius: BorderRadius.all(Radius.circular(10)),
                               borderSide: BorderSide(color: Color.fromRGBO(35, 47, 63, 1), width: 3),
                             ),
+
+                            // Validate
+                            errorStyle: const TextStyle(
+                              fontFamily: "Prompt",
+                            ),
                           ),
 
                           // Style
@@ -141,13 +185,25 @@ class _LoginFormScreen extends State<LoginFormScreen> {
                             // fontSize: 12,
                             fontFamily: "Prompt",
                           ),
+
+                          // Validate
+                          validator: (text) {
+                            if (text == null || text.isEmpty) {
+                              return 'กรุณากรอกรหัสผ่าน';
+                            }
+                            return null;
+                          },
                         ),
                       ),
 
                       const SizedBox(height: 50),
 
                       // Login button
-                      ElevatedButton(onPressed: () {}, 
+                      ElevatedButton(onPressed: () {
+                        if (_formKey.currentState!.validate()) {
+                          handleLogin();
+                        }
+                      }, 
                         // Button style
                         style: ButtonStyle(
                           backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(38, 85, 176, 1)),
@@ -170,65 +226,66 @@ class _LoginFormScreen extends State<LoginFormScreen> {
                         ),
                       ),
                     
-                      const SizedBox(height: 50),
+                    ],
+                  ),
+                ),
 
-                      // Register button
-                      ElevatedButton(onPressed: () {
-                          // Move to login page with route
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(builder: (context) => const LoginFaceScreen()),
-                          );
-                        },
+                const SizedBox(height: 50),
 
-                        // Button style
-                        style: ButtonStyle(
-                          // Background color none
-                          backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                // Button move to login face page
+                ElevatedButton(onPressed: () {
+                    // Move to login page with route
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => const LoginFace()),
+                    );
+                  },
 
-                          // Border radius
-                          shape: MaterialStateProperty.all<RoundedRectangleBorder>(
-                            RoundedRectangleBorder(
-                              borderRadius: BorderRadius.circular(10),
-                            ),
-                          ),
+                  // Button style
+                  style: ButtonStyle(
+                    // Background color none
+                    backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
 
-                          // Border
-                          side: MaterialStateProperty.all<BorderSide>(
-                            const BorderSide(
-                              color: Color.fromRGBO(79, 121, 201, 1),
-                              width: 1,
-                            ),
-                          ),
+                    // Border radius
+                    shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                      RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                    ),
 
-                          // Shadow
-                          elevation: MaterialStateProperty.all<double>(0),
+                    // Border
+                    side: MaterialStateProperty.all<BorderSide>(
+                      const BorderSide(
+                        color: Color.fromRGBO(79, 121, 201, 1),
+                        width: 1,
+                      ),
+                    ),
 
-                          // Width
-                          fixedSize: MaterialStateProperty.all<Size>(const Size(300, 50)),
+                    // Shadow
+                    elevation: MaterialStateProperty.all<double>(0),
+
+                    // Width
+                    fixedSize: MaterialStateProperty.all<Size>(const Size(300, 50)),
+                  ),
+                  
+                  child: const Row(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      // Icon
+                      Icon(Icons.face,
+                        color: Color.fromRGBO(79, 121, 201, 1),
+                      ),
+
+                      SizedBox(width: 10),
+
+                      // Text on button
+                      Text("เข้าสู่ระบบด้วยใบหน้า",
+                        style: TextStyle(
+                          fontSize: 18,
+                          color: Color.fromRGBO(79, 121, 201, 1),
+                          fontFamily: "Prompt",
                         ),
-                        
-                        child: const Row(
-                          mainAxisAlignment: MainAxisAlignment.center,
-                          children: [
-                            // Icon
-                            Icon(Icons.face,
-                              color: Color.fromRGBO(79, 121, 201, 1),
-                            ),
-
-                            SizedBox(width: 10),
-
-                            // Text on button
-                            Text("เข้าสู่ระบบด้วยใบหน้า",
-                              style: TextStyle(
-                                fontSize: 18,
-                                color: Color.fromRGBO(79, 121, 201, 1),
-                                fontFamily: "Prompt",
-                              ),
-                            ),
-                          ],
-                        ),
-                      )
+                      ),
                     ],
                   ),
                 )
