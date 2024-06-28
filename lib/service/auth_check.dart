@@ -2,7 +2,7 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
 // Page
-import '../page/home.dart';
+import '../page/route_page.dart';
 import '../page/login_face.dart';
 
 class AuthCheck extends StatelessWidget {
@@ -17,7 +17,7 @@ class AuthCheck extends StatelessWidget {
           if (snapshot.connectionState == ConnectionState.waiting) {
             return const CircularProgressIndicator();
           } else if (snapshot.hasData) {
-            return Home(user: snapshot.data!);
+            return const RouterPage();
           } else if (snapshot.hasError) {
             return const Text("Error occurred!");
           } else {

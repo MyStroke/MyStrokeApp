@@ -1,9 +1,9 @@
+import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import "package:flutter/material.dart";
 
-class Home extends StatelessWidget {
+class Account extends StatelessWidget {
   final User user;
-  const Home({super.key, required this.user});
+  const Account({super.key, required this.user});
 
   @override
   Widget build(BuildContext context) {
@@ -12,13 +12,13 @@ class Home extends StatelessWidget {
         primaryColor: const Color.fromRGBO(35, 47, 63, 1),
         fontFamily: "Prompt"
       ),
-      home: const HomeScreen(),
+      home: const AccountScreen(),
     );
   }
 }
 
-class HomeScreen extends StatelessWidget {
-  const HomeScreen({super.key});
+class AccountScreen extends StatelessWidget {
+  const AccountScreen({super.key});
 
   // Get current user
   User get user => FirebaseAuth.instance.currentUser!;
@@ -34,12 +34,14 @@ class HomeScreen extends StatelessWidget {
             fit: BoxFit.cover,
           ),
         ),
-        
+
+        // Set child
         child: Padding(
           padding: const EdgeInsets.all(20),
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
+
               // Text test with user email
               Text("Welcome, ${user.email}",
                 style: const TextStyle(
@@ -49,13 +51,7 @@ class HomeScreen extends StatelessWidget {
                 ),
               ),
               
-              // Sign out button
-              ElevatedButton(
-                onPressed: () async {
-                  await FirebaseAuth.instance.signOut();
-                },
-                child: const Text("Sign out"),
-              ),
+
             ],
           ),
         ),
