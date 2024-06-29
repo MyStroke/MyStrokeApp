@@ -1,19 +1,62 @@
+import 'package:camera/camera.dart';
+import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
+
 import 'login.dart';
 
-class LoginFace extends StatelessWidget {
+late List<CameraDescription> _cameras;
+
+Future<void> main() async {
+  WidgetsFlutterBinding.ensureInitialized();
+  _cameras = await availableCameras();
+  runApp(MaterialApp(
+    title: 'MyStroke',
+    theme: ThemeData(
+      primaryColor: const Color.fromRGBO(35, 47, 63, 1),
+      fontFamily: "Prompt"
+    ),
+    home: const LoginFace(),
+  ));
+}
+
+class LoginFace extends StatefulWidget {
   const LoginFace({super.key});
 
   @override
-  Widget build(BuildContext context) {
-    return const MaterialApp(
-      home: LoginFaceScreen(),
-    );
-  }
+  State<LoginFace> createState() => _LoginFaceScreenState();
 }
 
-class LoginFaceScreen extends StatelessWidget {
-  const LoginFaceScreen({super.key});
+class _LoginFaceScreenState extends State<LoginFace> {
+  CameraController? controller;
+  bool isCameraInitialized = false;
+
+  @override
+  void initState() {
+    super.initState();
+    requestStoragePermission();
+    initCamera();
+  }
+
+  void initCamera() async {
+    WidgetsFlutterBinding.ensureInitialized();
+    _cameras = await availableCameras();
+    controller = CameraController(_cameras[1], ResolutionPreset.medium);
+    await controller?.initialize().then((_) {
+      if (!mounted) {
+        return;
+      }
+      setState(() {
+        isCameraInitialized = true;
+      });
+    });
+  }
+
+  void requestStoragePermission() async {
+    var cameraStatus = await Permission.camera.status;
+    if (!cameraStatus.isGranted) {
+      await Permission.camera.request();
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +95,14 @@ class LoginFaceScreen extends StatelessWidget {
                   "assets/login_face/face_icon.png",
                   width: 200,
                 ),
+
+                // Camera preview
+                !isCameraInitialized
+                    ? const CircularProgressIndicator()
+                    : AspectRatio(
+                        aspectRatio: controller!.value.aspectRatio,
+                        child: CameraPreview(controller!),
+                      ),
 
                 const SizedBox(height: 75), 
 
