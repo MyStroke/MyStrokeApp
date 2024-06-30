@@ -2,6 +2,8 @@ import 'package:camera/camera.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 
+import '../service/auth_service.dart';
+
 import 'login.dart';
 
 late List<CameraDescription> _cameras;
@@ -37,17 +39,12 @@ class _LoginFaceScreenState extends State<LoginFace> {
     initCamera();
   }
 
-  void initCamera() async {
-    WidgetsFlutterBinding.ensureInitialized();
+  void initCamera() async {    
     _cameras = await availableCameras();
     controller = CameraController(_cameras[1], ResolutionPreset.medium);
     await controller?.initialize().then((_) {
-      if (!mounted) {
-        return;
-      }
-      setState(() {
-        isCameraInitialized = true;
-      });
+      if (!mounted) return;
+      setState(() => isCameraInitialized = true);
     });
   }
 
@@ -88,23 +85,21 @@ class _LoginFaceScreenState extends State<LoginFace> {
                   ),
                 ),
 
-                const SizedBox(height: 75),
-
-                // Face icon
-                Image.asset(
-                  "assets/login_face/face_icon.png",
-                  width: 200,
-                ),
+                const SizedBox(height: 50),
 
                 // Camera preview
                 !isCameraInitialized
-                    ? const CircularProgressIndicator()
+                    ? // Face icon
+                      Image.asset(
+                        "assets/login_face/face_icon.png",
+                        width: 200,
+                      )
                     : AspectRatio(
                         aspectRatio: controller!.value.aspectRatio,
                         child: CameraPreview(controller!),
                       ),
 
-                const SizedBox(height: 75), 
+                const SizedBox(height: 50), 
 
                 // Text title
                 const Text(
@@ -131,11 +126,23 @@ class _LoginFaceScreenState extends State<LoginFace> {
                   textAlign: TextAlign.center,
                 ),
 
-                const SizedBox(height: 100),
+                const SizedBox(height: 50),
 
-                // Button capture
-                ElevatedButton(onPressed: () {},
-                  // Button style
+                // Capture button
+                ElevatedButton(
+                  onPressed: () async {
+                    try {
+                      final image = await controller?.takePicture();
+                      if (image != null) {
+                        final imagePath = image.path;
+                        await AuthService().uploadFaceData(imagePath);
+                      } else {
+                        print('Image is null');
+                      }
+                    } catch (e) {
+                      print('Error capturing image: $e');
+                    }
+                  },
                   style: ButtonStyle(
                     // Background color none
                     backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
@@ -154,27 +161,16 @@ class _LoginFaceScreenState extends State<LoginFace> {
                         width: 1,
                       ),
                     ),
-
-                    // Shadow
                     elevation: MaterialStateProperty.all<double>(0),
-
-                    // Width
                     fixedSize: MaterialStateProperty.all<Size>(const Size(300, 50)),
                   ),
-
-                  // Button content
                   child: const Row(
                     mainAxisAlignment: MainAxisAlignment.center,
                     children: [
-                      // Icon
-                      Icon(Icons.camera_alt,
-                        color: Color.fromRGBO(79, 121, 201, 1),
-                      ),
-
+                      Icon(Icons.camera_alt, color: Color.fromRGBO(79, 121, 201, 1)),
                       SizedBox(width: 8),
-
-                      // Text on button
-                      Text("จับภาพ",
+                      Text(
+                        "จับภาพ",
                         style: TextStyle(
                           fontSize: 18,
                           color: Color.fromRGBO(79, 121, 201, 1),
@@ -182,55 +178,46 @@ class _LoginFaceScreenState extends State<LoginFace> {
                         ),
                       ),
                     ],
-                  )
+                  ),
                 ),
 
                 const SizedBox(height: 20),
 
-                // Button move to login page.
-                ElevatedButton(onPressed: () {
-                    // Move to login page with route
-                    Navigator.push(
-                      context,
+                // Login with account button
+                ElevatedButton(
+                  onPressed: () {
+                    Navigator.push(context,
                       MaterialPageRoute(builder: (context) => const LoginForm()),
                     );
+                    // dispose();
                   },
-
-                  // Button style
                   style: ButtonStyle(
-                    // Background color none
                     backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
-
-                    // Border radius
                     shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                       RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
                       ),
                     ),
-
-                    // Border
                     side: MaterialStateProperty.all<BorderSide>(
                       const BorderSide(
                         color: Color.fromRGBO(79, 121, 201, 1),
                         width: 1,
                       ),
                     ),
-
-                    // Shadow
                     elevation: MaterialStateProperty.all<double>(0),
-
-                    // Width
                     fixedSize: MaterialStateProperty.all<Size>(const Size(300, 50)),
                   ),
                   
-                  child: const Text("เข้าสู่ระบบด้วยบัญชี",
+                  child: const Text(
+                    "เข้าสู่ระบบด้วยบัญชี",
                     style: TextStyle(
                       fontSize: 18,
                       color: Color.fromRGBO(79, 121, 201, 1),
                       fontFamily: "Prompt",
                     ),
                   ),
-                )
+                ),
+
               ],
             ),
           ),
