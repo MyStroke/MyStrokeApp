@@ -137,10 +137,10 @@ class _LoginFaceScreenState extends State<LoginFace> {
                         final imagePath = image.path;
                         await AuthService().uploadFaceData(imagePath);
                       } else {
-                        print('Image is null');
+                        debugPrint('Image is null');
                       }
                     } catch (e) {
-                      print('Error capturing image: $e');
+                      debugPrint('Error capturing image: $e');
                     }
                   },
                   style: ButtonStyle(
