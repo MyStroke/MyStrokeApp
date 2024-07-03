@@ -1,7 +1,11 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:fl_chart/fl_chart.dart';
 
 import '../service/auth_getdata.dart';
+
+// Page
+// import '';
 
 class Home extends StatelessWidget {
   final User user;
@@ -214,13 +218,13 @@ class HomeScreen extends StatelessWidget {
                         ),
 
                         // Box content
-                        child: const Padding(
-                          padding: EdgeInsets.fromLTRB(25, 10, 25, 10),
+                        child: Padding(
+                          padding: const EdgeInsets.fromLTRB(25, 10, 25, 10),
                           child: Column(
                             crossAxisAlignment: CrossAxisAlignment.start,
                             children: [
                               // Menu
-                              Text("เมนู",
+                              const Text("เมนู",
                                 style: TextStyle(
                                   color: Colors.white,
                                   fontSize: 25,
@@ -228,12 +232,291 @@ class HomeScreen extends StatelessWidget {
                                 ),
                               ),
 
-                              SizedBox(height: 10),
-
                               // Scrolling items
-                              // Scrollbar(
-                              //   child: 
-                              // )
+                              Expanded(
+                                child: ListView(
+                                  scrollDirection: Axis.vertical,
+                                  children: [
+                                    // Histoty box
+                                    ElevatedButton(onPressed: () {},
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(39, 48, 61, 1)),
+
+                                        side: MaterialStateProperty.all<BorderSide>(
+                                          const BorderSide(
+                                            color: Color.fromRGBO(100, 123, 155, 1),
+                                            width: 1.0,
+                                          ),
+                                        ),
+
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                      
+                                      // Box content
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 5),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            // History
+                                            const Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Icon(Icons.content_paste,
+                                                  color: Color.fromRGBO(126, 169, 252, 1),
+                                                  size: 25,
+                                                ),
+
+                                                SizedBox(width: 5),
+
+                                                Text("ประวัติการบำบัด",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              
+                                              ]
+                                            ),
+
+                                            const SizedBox(height: 10),
+
+                                            // History description
+                                            const Text("ล่าสุด",
+                                              style: TextStyle(
+                                                color: Colors.white,
+                                                fontSize: 15,
+                                              ),
+                                            ),
+                                          
+                                            const SizedBox(height: 20),
+
+                                            // Bar chart
+                                            AspectRatio(
+                                              aspectRatio: 2.0,
+                                              child: BarChart(
+                                                BarChartData(
+                                                  alignment: BarChartAlignment.spaceAround,
+                                                  barTouchData: BarTouchData(
+                                                    enabled: false,
+                                                  ),
+                                                  borderData: FlBorderData(
+                                                    show: false,
+                                                  ),
+                                                  gridData: FlGridData(
+                                                    show: true,
+                                                    drawVerticalLine: false,
+                                                    drawHorizontalLine: true,
+                                                    horizontalInterval: 1.8,
+                                                    getDrawingHorizontalLine: (value) {
+                                                      return const FlLine(
+                                                        color: Color.fromRGBO(71, 143, 238, 1),
+                                                        strokeWidth: 1,
+                                                      );
+                                                    },
+                                                  ),
+                                                  titlesData: FlTitlesData(
+                                                    // top and right none
+                                                    rightTitles: const AxisTitles(
+                                                      sideTitles: SideTitles(
+                                                        showTitles: false,)
+                                                    ),
+                                                    topTitles: const AxisTitles(
+                                                      sideTitles: SideTitles(
+                                                        showTitles: false,)
+                                                      ),
+                                                    leftTitles: AxisTitles(
+                                                      sideTitles: SideTitles(
+                                                        showTitles: true,
+                                                        reservedSize: 28,
+                                                        getTitlesWidget: (value, meta) {
+                                                          return Text(
+                                                            value.toString().split(".")[0].toString(),
+                                                            style: const TextStyle(
+                                                              color: Colors.white,
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                    bottomTitles: AxisTitles(
+                                                      sideTitles: SideTitles(
+                                                        showTitles: true,
+                                                        getTitlesWidget: (value, meta) {
+                                                          return Text(
+                                                            value.toString(),
+                                                            style: const TextStyle(
+                                                              color: Colors.white,
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  barGroups: [
+                                                    BarChartGroupData(
+                                                      x: 1,
+                                                      barRods: [
+                                                        BarChartRodData(
+                                                          toY: 5,
+                                                          width: 11.59,
+                                                          gradient: const LinearGradient(
+                                                            colors: [
+                                                              Color.fromRGBO(255, 255, 255, 1),
+                                                              Color.fromRGBO(123, 127, 223, 1),
+                                                            ],
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                    BarChartGroupData(
+                                                      x: 1,
+                                                      barRods: [
+                                                        BarChartRodData(
+                                                          toY: 5,
+                                                          width: 11.59,
+                                                          gradient: const LinearGradient(
+                                                            colors: [
+                                                              Color.fromRGBO(255, 255, 255, 1),
+                                                              Color.fromRGBO(123, 127, 223, 1),
+                                                            ],
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  
+                                                    BarChartGroupData(
+                                                      x: 1,
+                                                      barRods: [
+                                                        BarChartRodData(
+                                                          toY: 5,
+                                                          width: 11.59,
+                                                          gradient: const LinearGradient(
+                                                            colors: [
+                                                              Color.fromRGBO(255, 255, 255, 1),
+                                                              Color.fromRGBO(123, 127, 223, 1),
+                                                            ],
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  
+                                                    BarChartGroupData(
+                                                      x: 1,
+                                                      barRods: [
+                                                        BarChartRodData(
+                                                          toY: 5,
+                                                          width: 11.59,
+                                                          gradient: const LinearGradient(
+                                                            colors: [
+                                                              Color.fromRGBO(255, 255, 255, 1),
+                                                              Color.fromRGBO(123, 127, 223, 1),
+                                                            ],
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                    BarChartGroupData(
+                                                      x: 1,
+                                                      barRods: [
+                                                        BarChartRodData(
+                                                          toY: 5,
+                                                          width: 11.59,
+                                                          gradient: const LinearGradient(
+                                                            colors: [
+                                                              Color.fromRGBO(255, 255, 255, 1),
+                                                              Color.fromRGBO(123, 127, 223, 1),
+                                                            ],
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                    BarChartGroupData(
+                                                      x: 1,
+                                                      barRods: [
+                                                        BarChartRodData(
+                                                          toY: 5,
+                                                          width: 11.59,
+                                                          gradient: const LinearGradient(
+                                                            colors: [
+                                                              Color.fromRGBO(255, 255, 255, 1),
+                                                              Color.fromRGBO(123, 127, 223, 1),
+                                                            ],
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  
+                                                    BarChartGroupData(
+                                                      x: 1,
+                                                      barRods: [
+                                                        BarChartRodData(
+                                                          toY: 5,
+                                                          width: 11.59,
+                                                          gradient: const LinearGradient(
+                                                            colors: [
+                                                              Color.fromRGBO(255, 255, 255, 1),
+                                                              Color.fromRGBO(123, 127, 223, 1),
+                                                            ],
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                  
+                                                    BarChartGroupData(
+                                                      x: 1,
+                                                      barRods: [
+                                                        BarChartRodData(
+                                                          toY: 5,
+                                                          width: 11.59,
+                                                          gradient: const LinearGradient(
+                                                            colors: [
+                                                              Color.fromRGBO(255, 255, 255, 1),
+                                                              Color.fromRGBO(123, 127, 223, 1),
+                                                            ],
+                                                            begin: Alignment.topCenter,
+                                                            end: Alignment.bottomCenter,
+                                                          ),
+                                                        ),
+                                                      ],
+                                                    ),
+
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 15),
+
+                                  ],
+                                ),
+                              ),
                             ],
                           ),
                         ),

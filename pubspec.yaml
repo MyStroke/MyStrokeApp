@@ -48,6 +48,7 @@ dependencies:
   fluttertoast: ^8.2.6
   permission_handler: ^11.3.1
   firebase_storage: ^12.1.0
+  fl_chart: ^0.68.0
 
   # Test
   # firebase_core: ^2.0.0
