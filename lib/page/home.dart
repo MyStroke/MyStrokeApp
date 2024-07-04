@@ -1,4 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:intl/intl.dart';
 import 'package:flutter/material.dart';
 import 'package:fl_chart/fl_chart.dart';
 
@@ -9,7 +11,8 @@ import '../service/auth_getdata.dart';
 
 class Home extends StatelessWidget {
   final User user;
-  const Home({super.key, required this.user});
+  final List<Map<String, dynamic>> data;
+  const Home({super.key, required this.user, required this.data});
 
   @override
   Widget build(BuildContext context) {
@@ -26,13 +29,31 @@ class Home extends StatelessWidget {
 class HomeScreen extends StatelessWidget {
   const HomeScreen({super.key});
 
-  // Get current user
   User get user => FirebaseAuth.instance.currentUser!;
+
+  Future<List<Map<String, dynamic>>> fetchData() async {
+    CollectionReference history = FirebaseFirestore.instance.collection('History');
+    QuerySnapshot querySnapshot = await history
+        .where('UID_user', isEqualTo: user.uid)
+        .orderBy('time', descending: true)
+        .limit(7)
+        .get();
+    return querySnapshot.docs.map((doc) => doc.data() as Map<String, dynamic>).toList();
+  }
+
+  List<Map<String, dynamic>> processData(List<Map<String, dynamic>> rawData) {
+    return rawData.map((data) {
+      return {
+        'date': "${DateFormat('H').format(data['time'].toDate())}:${DateFormat('m').format(data['time'].toDate())} น.",
+        'score': data['score'],
+      };
+    }).toList();
+  }
 
   @override
   Widget build(BuildContext context) {
-    // Move the getUserData call inside the build method
     final Future<Map<String, dynamic>> getUserData = AuthGetdata().getUserData();
+    final Future<List<Map<String, dynamic>>> getHistoryData = fetchData();
 
     // Function to shorten UID
     String shortenUid(String uid) {
@@ -287,9 +308,9 @@ class HomeScreen extends StatelessWidget {
                                             const SizedBox(height: 10),
 
                                             // History description
-                                            const Text("ล่าสุด",
+                                            const Text("การบำบัดล่าสุด",
                                               style: TextStyle(
-                                                color: Colors.white,
+                                                color: Color(0xBBBBBBBB),
                                                 fontSize: 15,
                                               ),
                                             ),
@@ -297,215 +318,89 @@ class HomeScreen extends StatelessWidget {
                                             const SizedBox(height: 20),
 
                                             // Bar chart
-                                            AspectRatio(
-                                              aspectRatio: 2.0,
-                                              child: BarChart(
-                                                BarChartData(
-                                                  alignment: BarChartAlignment.spaceAround,
-                                                  barTouchData: BarTouchData(
-                                                    enabled: false,
-                                                  ),
-                                                  borderData: FlBorderData(
-                                                    show: false,
-                                                  ),
-                                                  gridData: FlGridData(
-                                                    show: true,
-                                                    drawVerticalLine: false,
-                                                    drawHorizontalLine: true,
-                                                    horizontalInterval: 1.8,
-                                                    getDrawingHorizontalLine: (value) {
-                                                      return const FlLine(
-                                                        color: Color.fromRGBO(71, 143, 238, 1),
-                                                        strokeWidth: 1,
-                                                      );
-                                                    },
-                                                  ),
-                                                  titlesData: FlTitlesData(
-                                                    // top and right none
-                                                    rightTitles: const AxisTitles(
-                                                      sideTitles: SideTitles(
-                                                        showTitles: false,)
-                                                    ),
-                                                    topTitles: const AxisTitles(
-                                                      sideTitles: SideTitles(
-                                                        showTitles: false,)
-                                                      ),
-                                                    leftTitles: AxisTitles(
-                                                      sideTitles: SideTitles(
-                                                        showTitles: true,
-                                                        reservedSize: 28,
-                                                        getTitlesWidget: (value, meta) {
-                                                          return Text(
-                                                            value.toString().split(".")[0].toString(),
-                                                            style: const TextStyle(
-                                                              color: Colors.white,
-                                                            ),
+                                            FutureBuilder<List<Map<String, dynamic>>>(
+                                              future: getHistoryData,
+                                              builder: (context, snapshot) {
+                                                if (snapshot.connectionState == ConnectionState.waiting) {
+                                                  return const CircularProgressIndicator();
+                                                }
+                                                final data = processData(snapshot.data!);
+                                                return AspectRatio(
+                                                  aspectRatio: 2.0,
+                                                  child: BarChart(
+                                                    BarChartData(
+                                                      alignment: BarChartAlignment.spaceAround,
+                                                      barTouchData: BarTouchData(enabled: false),
+                                                      borderData: FlBorderData(show: false),
+                                                      gridData: FlGridData(
+                                                        show: true,
+                                                        drawVerticalLine: false,
+                                                        drawHorizontalLine: true,
+                                                        horizontalInterval: 1.8,
+                                                        getDrawingHorizontalLine: (value) {
+                                                          return const FlLine(
+                                                            color: Color.fromRGBO(71, 143, 238, 1),
+                                                            strokeWidth: 1,
                                                           );
                                                         },
                                                       ),
-                                                    ),
-                                                    bottomTitles: AxisTitles(
-                                                      sideTitles: SideTitles(
-                                                        showTitles: true,
-                                                        getTitlesWidget: (value, meta) {
-                                                          return Text(
-                                                            value.toString(),
-                                                            style: const TextStyle(
-                                                              color: Colors.white,
-                                                            ),
-                                                          );
-                                                        },
+                                                      titlesData: FlTitlesData(
+                                                        rightTitles: const AxisTitles(
+                                                          sideTitles: SideTitles(showTitles: false),
+                                                        ),
+                                                        topTitles: const AxisTitles(
+                                                          sideTitles: SideTitles(showTitles: false),
+                                                        ),
+                                                        leftTitles: AxisTitles(
+                                                          sideTitles: SideTitles(
+                                                            showTitles: true,
+                                                            reservedSize: 28,
+                                                            getTitlesWidget: (value, meta) {
+                                                              return Text(
+                                                                value.toString().split(".")[0],
+                                                                style: const TextStyle(color: Colors.white),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
+                                                        bottomTitles: AxisTitles(
+                                                          sideTitles: SideTitles(
+                                                            showTitles: true,
+                                                            getTitlesWidget: (value, meta) {
+                                                              return Text(
+                                                                data[value.toInt()]['date'],
+                                                                style: const TextStyle(color: Colors.white),
+                                                              );
+                                                            },
+                                                          ),
+                                                        ),
                                                       ),
+                                                      barGroups: data.asMap().entries.map((entry) {
+                                                        final index = entry.key;
+                                                        final item = entry.value;
+                                                        return BarChartGroupData(
+                                                          x: index,
+                                                          barRods: [
+                                                            BarChartRodData(
+                                                              toY: item['score'].toDouble(),
+                                                              width: 11.59,
+                                                              // gradient color
+                                                              gradient: const LinearGradient(
+                                                                colors: [
+                                                                  Color.fromRGBO(255, 255, 255, 1),
+                                                                  Color.fromRGBO(123, 127, 223, 1),
+                                                                ],
+                                                                begin: Alignment.topCenter,
+                                                                end: Alignment.bottomCenter,
+                                                              ),
+                                                            ),
+                                                          ],
+                                                        );
+                                                      }).toList(),
                                                     ),
                                                   ),
-                                                  barGroups: [
-                                                    BarChartGroupData(
-                                                      x: 1,
-                                                      barRods: [
-                                                        BarChartRodData(
-                                                          toY: 5,
-                                                          width: 11.59,
-                                                          gradient: const LinearGradient(
-                                                            colors: [
-                                                              Color.fromRGBO(255, 255, 255, 1),
-                                                              Color.fromRGBO(123, 127, 223, 1),
-                                                            ],
-                                                            begin: Alignment.topCenter,
-                                                            end: Alignment.bottomCenter,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-
-                                                    BarChartGroupData(
-                                                      x: 1,
-                                                      barRods: [
-                                                        BarChartRodData(
-                                                          toY: 5,
-                                                          width: 11.59,
-                                                          gradient: const LinearGradient(
-                                                            colors: [
-                                                              Color.fromRGBO(255, 255, 255, 1),
-                                                              Color.fromRGBO(123, 127, 223, 1),
-                                                            ],
-                                                            begin: Alignment.topCenter,
-                                                            end: Alignment.bottomCenter,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  
-                                                    BarChartGroupData(
-                                                      x: 1,
-                                                      barRods: [
-                                                        BarChartRodData(
-                                                          toY: 5,
-                                                          width: 11.59,
-                                                          gradient: const LinearGradient(
-                                                            colors: [
-                                                              Color.fromRGBO(255, 255, 255, 1),
-                                                              Color.fromRGBO(123, 127, 223, 1),
-                                                            ],
-                                                            begin: Alignment.topCenter,
-                                                            end: Alignment.bottomCenter,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  
-                                                    BarChartGroupData(
-                                                      x: 1,
-                                                      barRods: [
-                                                        BarChartRodData(
-                                                          toY: 5,
-                                                          width: 11.59,
-                                                          gradient: const LinearGradient(
-                                                            colors: [
-                                                              Color.fromRGBO(255, 255, 255, 1),
-                                                              Color.fromRGBO(123, 127, 223, 1),
-                                                            ],
-                                                            begin: Alignment.topCenter,
-                                                            end: Alignment.bottomCenter,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-
-                                                    BarChartGroupData(
-                                                      x: 1,
-                                                      barRods: [
-                                                        BarChartRodData(
-                                                          toY: 5,
-                                                          width: 11.59,
-                                                          gradient: const LinearGradient(
-                                                            colors: [
-                                                              Color.fromRGBO(255, 255, 255, 1),
-                                                              Color.fromRGBO(123, 127, 223, 1),
-                                                            ],
-                                                            begin: Alignment.topCenter,
-                                                            end: Alignment.bottomCenter,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-
-                                                    BarChartGroupData(
-                                                      x: 1,
-                                                      barRods: [
-                                                        BarChartRodData(
-                                                          toY: 5,
-                                                          width: 11.59,
-                                                          gradient: const LinearGradient(
-                                                            colors: [
-                                                              Color.fromRGBO(255, 255, 255, 1),
-                                                              Color.fromRGBO(123, 127, 223, 1),
-                                                            ],
-                                                            begin: Alignment.topCenter,
-                                                            end: Alignment.bottomCenter,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  
-                                                    BarChartGroupData(
-                                                      x: 1,
-                                                      barRods: [
-                                                        BarChartRodData(
-                                                          toY: 5,
-                                                          width: 11.59,
-                                                          gradient: const LinearGradient(
-                                                            colors: [
-                                                              Color.fromRGBO(255, 255, 255, 1),
-                                                              Color.fromRGBO(123, 127, 223, 1),
-                                                            ],
-                                                            begin: Alignment.topCenter,
-                                                            end: Alignment.bottomCenter,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-                                                  
-                                                    BarChartGroupData(
-                                                      x: 1,
-                                                      barRods: [
-                                                        BarChartRodData(
-                                                          toY: 5,
-                                                          width: 11.59,
-                                                          gradient: const LinearGradient(
-                                                            colors: [
-                                                              Color.fromRGBO(255, 255, 255, 1),
-                                                              Color.fromRGBO(123, 127, 223, 1),
-                                                            ],
-                                                            begin: Alignment.topCenter,
-                                                            end: Alignment.bottomCenter,
-                                                          ),
-                                                        ),
-                                                      ],
-                                                    ),
-
-                                                  ],
-                                                ),
-                                              ),
+                                                );
+                                              },
                                             ),
                                           ],
                                         ),
