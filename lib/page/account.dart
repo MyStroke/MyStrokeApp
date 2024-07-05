@@ -50,6 +50,14 @@ class AccountScreen extends StatelessWidget {
                   color: Colors.white,
                 ),
               ),
+
+              // Button sign out
+              ElevatedButton(
+                onPressed: () async {
+                  await FirebaseAuth.instance.signOut();
+                },
+                child: const Text("Sign out"),
+              ),
               
 
             ],

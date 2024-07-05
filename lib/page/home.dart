@@ -31,6 +31,7 @@ class HomeScreen extends StatelessWidget {
 
   User get user => FirebaseAuth.instance.currentUser!;
 
+  /*-------------------------- Read History --------------------------*/
   Future<List<Map<String, dynamic>>> fetchData() async {
     CollectionReference history = FirebaseFirestore.instance.collection('History');
     QuerySnapshot querySnapshot = await history
@@ -49,11 +50,36 @@ class HomeScreen extends StatelessWidget {
       };
     }).toList();
   }
+  
+  Future<int> getActive() async {
+    CollectionReference history = FirebaseFirestore.instance.collection('History');
+    DateTime now = DateTime.now();
+    String todayFormat = DateFormat('yyyy-MM-dd').format(now);
+    QuerySnapshot querySnapshot = await history
+        .where('UID_user', isEqualTo: user.uid)
+        .where('date', isEqualTo: todayFormat)
+        .get();
+
+    return querySnapshot.docs.length;
+  }
+
+  /*-------------------------- Read Class --------------------------*/
+  Future<Map<String, dynamic>?> fetchClassData() async {
+    DocumentSnapshot userDoc = await FirebaseFirestore.instance.collection('Patient').doc(user.uid).get();
+    final userData = userDoc.data() as Map<String, dynamic>?;
+    if (userData != null && userData.containsKey('class_id') && userData['class_id'] != "") {
+      String classId = userData['class_id'];
+      DocumentSnapshot classDoc = await FirebaseFirestore.instance.collection('Class').doc(classId).get();
+      return classDoc.data() as Map<String, dynamic>?;
+    }
+    return null;
+  }
 
   @override
   Widget build(BuildContext context) {
     final Future<Map<String, dynamic>> getUserData = AuthGetdata().getUserData();
     final Future<List<Map<String, dynamic>>> getHistoryData = fetchData();
+    final Future<Map<String, dynamic>?> getClassData = fetchClassData();
 
     // Function to shorten UID
     String shortenUid(String uid) {
@@ -82,11 +108,11 @@ class HomeScreen extends StatelessWidget {
                 future: getUserData,
                 builder: (context, snapshot) {
                   if (snapshot.connectionState == ConnectionState.waiting) {
-                    return const CircularProgressIndicator();
+                    return const Center(child: CircularProgressIndicator());
                   }
                   if (!snapshot.hasData) {
                     // Handle the case where snapshot doesn't have data
-                    return const Text("No data available");
+                    return const Center(child: Text("No data available"));
                   }
                   return Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
@@ -279,7 +305,7 @@ class HomeScreen extends StatelessWidget {
                                       
                                       // Box content
                                       child: Padding(
-                                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 5),
+                                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
                                         child: Column(
                                           crossAxisAlignment: CrossAxisAlignment.start,
                                           children: [
@@ -322,7 +348,7 @@ class HomeScreen extends StatelessWidget {
                                               future: getHistoryData,
                                               builder: (context, snapshot) {
                                                 if (snapshot.connectionState == ConnectionState.waiting) {
-                                                  return const CircularProgressIndicator();
+                                                  return const Center(child: CircularProgressIndicator());
                                                 }
                                                 final data = processData(snapshot.data!);
                                                 return AspectRatio(
@@ -409,6 +435,284 @@ class HomeScreen extends StatelessWidget {
 
                                     const SizedBox(height: 15),
 
+                                    // Class box
+                                    ElevatedButton(onPressed: () {},
+                                      style: ButtonStyle(
+                                        backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(53, 65, 81, 1)),
+
+                                        side: MaterialStateProperty.all<BorderSide>(
+                                          const BorderSide(
+                                            color: Color.fromRGBO(100, 123, 155, 1),
+                                            width: 1.0,
+                                          ),
+                                        ),
+
+                                        shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                          RoundedRectangleBorder(
+                                            borderRadius: BorderRadius.circular(20),
+                                          ),
+                                        ),
+                                      ),
+                                    
+                                      // Box content
+                                      child: Padding(
+                                        padding: const EdgeInsets.fromLTRB(0, 15, 0, 15),
+                                        child: Column(
+                                          crossAxisAlignment: CrossAxisAlignment.start,
+                                          children: [
+                                            // Class title
+                                            const Row(
+                                              mainAxisAlignment: MainAxisAlignment.start,
+                                              children: [
+                                                Icon(Icons.supervisor_account,
+                                                  color: Color.fromRGBO(126, 169, 252, 1),
+                                                  size: 25,
+                                                ),
+
+                                                SizedBox(width: 5),
+
+                                                Text("คลาสของคุณ",
+                                                  style: TextStyle(
+                                                    color: Colors.white,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                ),
+                                              
+                                              ]
+                                            ),
+                                          
+                                            const SizedBox(height: 10),
+
+                                            // Class member
+                                            FutureBuilder<Map<String, dynamic>?>(
+                                              future: getClassData,
+                                              builder: (context, classSnapshot) {
+                                                // Loading
+                                                if (classSnapshot.connectionState == ConnectionState.waiting) {
+                                                  return const Center(child: CircularProgressIndicator());
+                                                }
+
+                                                // No class
+                                                if (!classSnapshot.hasData || classSnapshot.data == null) {
+                                                  return const Center(
+                                                    child: Text(
+                                                      "คุณยังไม่ได้เข้าคลาส",
+                                                      style: TextStyle(
+                                                        color: Colors.redAccent,
+                                                        fontSize: 18,
+                                                        // fontWeight: FontWeight.bold,
+                                                      ),
+                                                    ),
+                                                  );
+                                                }
+
+                                                // Class data
+                                                final Map<String, dynamic> classData = classSnapshot.data as Map<String, dynamic>;
+                                                
+                                                final Map<String, dynamic> users = classData['users'] as Map<String, dynamic>? ?? {};
+
+
+                                                return Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    // Class description
+                                                    Text("สมาชิกภายในคลาส ${classData['name']}",
+                                                      style: const TextStyle(
+                                                        color: Color(0xBBBBBBBB),
+                                                        fontSize: 15,
+                                                      ),
+                                                    ),
+                                          
+                                                    const SizedBox(height: 10),
+
+                                                    ...users.entries.take(3).map((entry) {
+                                                      return 
+                                                      Container(
+                                                        width: double.infinity,
+                                                        decoration: BoxDecoration(
+                                                          borderRadius: BorderRadius.circular(50),
+                                                          color: const Color.fromRGBO(37, 51, 69, 1),
+                                                        ),
+                                                        child: Padding(
+                                                          padding: const EdgeInsets.fromLTRB(10, 5, 10, 5),
+                                                          child: Row(
+                                                            children: [
+
+                                                                Text("${entry.value['username']}",
+                                                                style: const TextStyle(
+                                                                  color: Colors.white,
+                                                                  fontWeight: FontWeight.bold,
+                                                                ),
+
+
+                                                              ),
+                                                            ],
+                                                          )
+                                                        ),
+                                                      );
+                                                    }),
+                                                  ],
+                                                );
+                                              },
+                                            ),
+                                          ],
+                                        ),
+                                      ),
+                                    ),
+
+                                    const SizedBox(height: 15),
+
+                                    // Box game and active
+                                    Row(
+                                      children: [
+                                        // Game box
+                                        Expanded(
+                                          child: Container(
+                                            constraints: const BoxConstraints.tightFor(height: 130.0),
+
+                                            child: ElevatedButton(onPressed: () {},
+                                              style: ButtonStyle(
+                                                backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(53, 65, 81, 1)),
+
+                                                side: MaterialStateProperty.all<BorderSide>(
+                                                  const BorderSide(
+                                                    color: Color.fromRGBO(100, 123, 155, 1),
+                                                    width: 1.0,
+                                                  ),
+                                                ),
+
+                                                shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                                                  RoundedRectangleBorder(
+                                                    borderRadius: BorderRadius.circular(20),
+                                                  ),
+                                                ),
+                                              ),
+                                            
+                                              // Box content
+                                              child: Padding(
+                                                padding: const EdgeInsets.fromLTRB(0, 3, 0, 3),
+                                                child: Column(
+                                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                                  children: [
+                                                    // Game title
+                                                    const Row(
+                                                      mainAxisAlignment: MainAxisAlignment.start,
+                                                      children: [
+                                                        Icon(Icons.sports_esports,
+                                                          color: Color.fromRGBO(126, 169, 252, 1),
+                                                          size: 25,
+                                                        ),
+
+                                                        SizedBox(width: 5),
+
+                                                        Text("เกม",
+                                                          style: TextStyle(
+                                                            color: Colors.white,
+                                                            fontSize: 18,
+                                                            fontWeight: FontWeight.bold,
+                                                          ),
+                                                        ),
+                                                      
+                                                      ]
+                                                    ),
+
+                                                    // Game description
+                                                    const Text("MyStrokeGame",
+                                                      style: TextStyle(
+                                                        color: Color(0xBBBBBBBB),
+                                                        fontSize: 12,
+                                                      ),
+                                                    ),
+
+                                                    // Image game
+                                                    Center(
+                                                      child: Image.asset("assets/page/gameinfo.png"),
+                                                    ),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                        ),
+                                      ),
+
+                                        const SizedBox(width: 15),
+
+                                        // Active box
+                                        Expanded(
+                                          child: Container(
+                                            decoration: BoxDecoration(
+                                              border: Border.all(
+                                                color: const Color.fromRGBO(100, 123, 155, 1),
+                                                width: 1.0,
+                                              ),
+                                              borderRadius: BorderRadius.circular(20),
+                                              color: const Color.fromRGBO(39, 48, 61, 1),
+                                            ),
+                                            height: 130,
+
+                                            // Box content
+                                            child: Padding(
+                                              padding: const EdgeInsets.fromLTRB(10, 3, 10, 3),
+                                              child: Column(
+                                                crossAxisAlignment: CrossAxisAlignment.start,
+                                                children: [
+                                                  // Active title
+                                                  const Row(
+                                                    mainAxisAlignment: MainAxisAlignment.start,
+                                                    children: [
+                                                      Icon(Icons.check_circle_outline,
+                                                        color: Color.fromRGBO(126, 169, 252, 1),
+                                                        size: 25,
+                                                      ),
+
+                                                      SizedBox(width: 5),
+
+                                                      Text("กิจกรรม",
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 18,
+                                                          fontWeight: FontWeight.bold,
+                                                        ),
+                                                      ),
+                                                    
+                                                    ]
+                                                  ),
+
+                                                  // Active description
+                                                  const Text("วันนี้บำบัดไปแล้ว",
+                                                    style: TextStyle(
+                                                      color: Color(0xBBBBBBBB),
+                                                      fontSize: 12,
+                                                    ),
+                                                  ),
+
+                                                  const SizedBox(height: 20),
+
+                                                  // text active
+                                                  FutureBuilder(
+                                                    future: getActive(), 
+                                                    builder: (context, snapshot) {
+                                                      if (snapshot.connectionState == ConnectionState.waiting) {
+                                                        return const Center(child: CircularProgressIndicator());
+                                                      }
+                                                      return Center(
+                                                        child: Text("${snapshot.data} ครั้ง",
+                                                          style: const TextStyle(
+                                                            color: Color.fromARGB(255, 18, 212, 118),
+                                                            fontSize: 20,
+                                                          ),
+                                                        ),
+                                                      );
+                                                    }
+                                                  ),
+                                                ],
+                                              ),
+                                            ),
+                                          )
+                                        ),
+                                      ],
+                                    )
                                   ],
                                 ),
                               ),
