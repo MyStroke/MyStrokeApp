@@ -360,14 +360,29 @@ class HomeScreen extends StatelessWidget {
                                                   aspectRatio: 2.0,
                                                   child: BarChart(
                                                     BarChartData(
+                                                      maxY: 100,
                                                       alignment: BarChartAlignment.spaceAround,
                                                       barTouchData: BarTouchData(enabled: false),
-                                                      borderData: FlBorderData(show: false),
+                                                      borderData: FlBorderData(
+                                                        show: true,
+                                                        border: const Border(
+                                                          top: BorderSide(
+                                                            color: Color.fromRGBO(71, 143, 238, 0.66),
+                                                            width: 1,
+                                                          ),
+                                                          right: BorderSide.none,
+                                                          left: BorderSide.none,
+                                                          bottom: BorderSide(
+                                                            color: Color.fromRGBO(71, 143, 238, 0.66),
+                                                            width: 1,
+                                                          ),
+                                                        ),
+                                                      ),
                                                       gridData: FlGridData(
                                                         show: true,
                                                         drawVerticalLine: false,
                                                         drawHorizontalLine: true,
-                                                        horizontalInterval: 1.8,
+                                                        horizontalInterval: 20,
                                                         getDrawingHorizontalLine: (value) {
                                                           return const FlLine(
                                                             color: Color.fromRGBO(71, 143, 238, 1),
