@@ -3,39 +3,50 @@ import 'package:flutter/material.dart';
 // Page
 import './home.dart';
 import './account.dart';
+import './history.dart';
 
 class RouterPage extends StatelessWidget {
-  const RouterPage({super.key});
+  final int selectedIndex;
+
+  const RouterPage({super.key, this.selectedIndex = 2});
 
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
       theme: ThemeData(
         primaryColor: const Color.fromRGBO(35, 47, 63, 1),
-        fontFamily: "Prompt"
+        fontFamily: "Prompt",
       ),
-      home: const BottomNavigationBarPage(),
+      home: BottomNavigationBarPage(selectedIndex: selectedIndex),
     );
   }
 }
 
 class BottomNavigationBarPage extends StatefulWidget {
-  const BottomNavigationBarPage({super.key});
+  final int selectedIndex;
+
+  const BottomNavigationBarPage({super.key, required this.selectedIndex});
 
   @override
   State<BottomNavigationBarPage> createState() => _BottomNavigationBarPageState();
 }
 
 class _BottomNavigationBarPageState extends State<BottomNavigationBarPage> {
+  late int _selectedIndex;
 
-  int _selectedIndex = 2;
   static const List<Widget> _widgetOptions = <Widget>[
-    Text("History"),
+    HistoryScreen(),
     Text("Class"),
     HomeScreen(),
     Text("Game"),
     AccountScreen(),
   ];
+
+  @override
+  void initState() {
+    super.initState();
+    _selectedIndex = widget.selectedIndex;
+  }
 
   void _onItemTapped(int index) {
     setState(() {

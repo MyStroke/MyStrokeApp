@@ -7,7 +7,7 @@ import 'package:fl_chart/fl_chart.dart';
 import '../service/auth_getdata.dart';
 
 // Page
-// import '';
+import './route_page.dart';
 
 class Home extends StatelessWidget {
   final User user;
@@ -285,7 +285,12 @@ class HomeScreen extends StatelessWidget {
                                   scrollDirection: Axis.vertical,
                                   children: [
                                     // Histoty box
-                                    ElevatedButton(onPressed: () {},
+                                    ElevatedButton(onPressed: () {
+                                      Navigator.push(
+                                        context,
+                                        MaterialPageRoute(builder: (context) => const RouterPage(selectedIndex: 0)),
+                                      );
+                                    },
                                       style: ButtonStyle(
                                         backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(39, 48, 61, 1)),
 
@@ -569,7 +574,7 @@ class HomeScreen extends StatelessWidget {
                                         // Game box
                                         Expanded(
                                           child: Container(
-                                            constraints: const BoxConstraints.tightFor(height: 130.0),
+                                            constraints: const BoxConstraints.tightFor(height: 150.0),
 
                                             child: ElevatedButton(onPressed: () {},
                                               style: ButtonStyle(
@@ -649,7 +654,7 @@ class HomeScreen extends StatelessWidget {
                                               borderRadius: BorderRadius.circular(20),
                                               color: const Color.fromRGBO(39, 48, 61, 1),
                                             ),
-                                            height: 130,
+                                            height: 150,
 
                                             // Box content
                                             child: Padding(
