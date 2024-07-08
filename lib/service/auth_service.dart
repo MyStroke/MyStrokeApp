@@ -73,6 +73,7 @@ class AuthService {
         'profile': 'https://firebasestorage.googleapis.com/v0/b/mystroke-c4378.appspot.com/o/UnknowUser.png?alt=media&token=56b96cc6-9c5c-4756-a97b-f676e95a9482',
         'additional_diseases': '',
       },
+      'class_id': '',
     });
   }
 
@@ -106,6 +107,7 @@ class AuthService {
           'profile': 'https://firebasestorage.googleapis.com/v0/b/mystroke-c4378.appspot.com/o/UnknowUser.png?alt=media&token=56b96cc6-9c5c-4756-a97b-f676e95a9482',
           'additional_diseases': '',
         },
+        'class_id': '',
       });
 
       // Save face data to Firebase Storage

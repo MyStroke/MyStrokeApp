@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import './home.dart';
 import './account.dart';
 import './history.dart';
+import './class.dart';
 
 class RouterPage extends StatelessWidget {
   final int selectedIndex;
@@ -36,7 +37,7 @@ class _BottomNavigationBarPageState extends State<BottomNavigationBarPage> {
 
   static const List<Widget> _widgetOptions = <Widget>[
     HistoryScreen(),
-    Text("Class"),
+    ClassScreen(),
     HomeScreen(),
     Text("Game"),
     AccountScreen(),
