@@ -5,6 +5,7 @@ import './home.dart';
 import './account.dart';
 import './history.dart';
 import './class.dart';
+import './game.dart';
 
 class RouterPage extends StatelessWidget {
   final int selectedIndex;
@@ -39,7 +40,7 @@ class _BottomNavigationBarPageState extends State<BottomNavigationBarPage> {
     HistoryScreen(),
     ClassScreen(),
     HomeScreen(),
-    Text("Game"),
+    GameScreen(),
     AccountScreen(),
   ];
 
