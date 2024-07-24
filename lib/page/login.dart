@@ -1,3 +1,4 @@
+import 'package:mystroke_app/page/route_page.dart';
 import 'package:mystroke_app/service/auth_exception.dart';
 import '../service/auth_service.dart';
 
@@ -39,6 +40,10 @@ class _LoginFormScreen extends State<LoginFormScreen> {
     ).then((status) {
       if (status == AuthResultStatus.successful) {
         Fluttertoast.showToast(msg: "เข้าสู่ระบบสำเร็จ");
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => const RouterPage()),
+        );
       } else {
         final errorMsg = AuthExceptionHandler.errorMessage(status);
         Fluttertoast.showToast(msg: errorMsg);
