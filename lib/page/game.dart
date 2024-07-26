@@ -56,13 +56,23 @@ class _GameScreenState extends State<GameScreen> {
       ..loadRequest(Uri.parse('https://mystrokegame-webgl.onrender.com/'));
   }
   
-  void initCamera() async {    
-    _cameras = await availableCameras();
-    controller = CameraController(_cameras[1], ResolutionPreset.medium);
-    await controller?.initialize().then((_) {
-      if (!mounted) return;
-      setState(() => isCameraInitialized = true);
-    });
+  void initCamera() async {
+    try {
+      _cameras = await availableCameras();
+      controller = CameraController(_cameras[1], ResolutionPreset.medium, enableAudio: false);
+      await controller?.initialize().then((_) {
+        if (!mounted) return;
+        setState(() => isCameraInitialized = true);
+      });
+    } catch (e) {
+      if (e is CameraException) {
+        debugPrint('CameraException: ${e.code}, ${e.description}');
+        if (e.code == 'CameraAccessDenied') {
+          debugPrint('Camera access permission was denied.');
+        }
+        initCamera();
+      }
+    }
   }
 
   void requestStoragePermission() async {

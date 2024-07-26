@@ -126,7 +126,7 @@ class HomeScreen extends StatelessWidget {
                             children: [
                               // greeting message
                               Text(
-                                "สวัสดี ${snapshot.data!["username"]}!",
+                                "สวัสดี ${shortenUid(snapshot.data!["username"])}!",
                                 style: const TextStyle(
                                   fontSize: 24,
                                   color: Colors.white,

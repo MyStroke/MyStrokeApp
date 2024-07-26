@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:mystroke_app/page/login_face.dart';
 
 import '../service/auth_getdata.dart';
 
@@ -106,6 +107,7 @@ class _AccountScreen extends State<AccountScreen> {
                         ),
                         onPressed: () async {
                           await FirebaseAuth.instance.signOut();
+                          Navigator.push(context, MaterialPageRoute(builder: (context) => const LoginFace()));
                         },
                         child: const Text("ออกจากระบบ", style: TextStyle(
                           fontSize: 16,

@@ -1,4 +1,5 @@
 import 'package:camera/camera.dart';
+import 'package:mystroke_app/page/route_page.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:flutter/material.dart';
 
@@ -146,6 +147,10 @@ class _LoginFaceScreenState extends State<LoginFace> {
                       if (image != null) {
                         final imagePath = image.path;
                         await AuthService().uploadFaceData(imagePath);
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(builder: (context) => const RouterPage()),
+                        );
                       } else {
                         debugPrint('Image is null');
                       }
