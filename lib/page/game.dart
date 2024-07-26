@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter/webview_flutter.dart';
+import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
 import 'package:camera/camera.dart';
 import 'package:permission_handler/permission_handler.dart';
+import 'package:webview_flutter_android/webview_flutter_android.dart';
 
 late List<CameraDescription> _cameras;
 
@@ -19,21 +20,6 @@ void main() async {
   ));
 }
 
-class Game extends StatelessWidget {
-  const Game({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: const Color.fromRGBO(35, 47, 63, 1),
-        fontFamily: "Prompt",
-      ),
-      home: const GameScreen(),
-    );
-  }
-}
-
 class GameScreen extends StatefulWidget {
   const GameScreen({super.key});
 
@@ -44,22 +30,18 @@ class GameScreen extends StatefulWidget {
 class _GameScreenState extends State<GameScreen> {
   CameraController? controller;
   bool isCameraInitialized = false;
-  late WebViewController _webViewController;
+  late PlatformWebViewController _webViewController;
 
   @override
   void initState() {
     super.initState();
-    requestStoragePermission();
-    initCamera();
-    _webViewController = WebViewController()
-      ..setJavaScriptMode(JavaScriptMode.unrestricted)
-      ..loadRequest(Uri.parse('https://mystrokegame-webgl.onrender.com/'));
+    requestCameraPermission();
   }
-  
+
   void initCamera() async {
     try {
       _cameras = await availableCameras();
-      controller = CameraController(_cameras[1], ResolutionPreset.medium, enableAudio: false);
+      controller = CameraController(_cameras[0], ResolutionPreset.medium, enableAudio: false);
       await controller?.initialize().then((_) {
         if (!mounted) return;
         setState(() => isCameraInitialized = true);
@@ -75,18 +57,58 @@ class _GameScreenState extends State<GameScreen> {
     }
   }
 
-  void requestStoragePermission() async {
+  void requestCameraPermission() async {
     var cameraStatus = await Permission.camera.status;
     if (!cameraStatus.isGranted) {
       await Permission.camera.request();
+      
+    } else {
+      initCamera();
+      setupWebView();
     }
   }
+
+  void setupWebView() {
+    _webViewController = PlatformWebViewController(
+      AndroidWebViewControllerCreationParams(),
+    )
+    ..setJavaScriptMode(JavaScriptMode.unrestricted)
+    ..setOnPlatformPermissionRequest(
+      (PlatformWebViewPermissionRequest request) {
+        if (request.types.contains(WebViewPermissionResourceType.camera)) {
+          debugPrint('Requesting camera permission');
+          request.grant();
+        } else {
+          request.deny();
+        }
+      },
+    )
+    ..loadRequest(
+      LoadRequestParams(
+        uri: Uri.parse('https://mystrokegame-webgl.onrender.com/'),
+      ),
+    );
+    setState(() {});
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: WebViewWidget(
-        controller: _webViewController,
-      ),
+      body: isCameraInitialized
+          ? 
+            // AspectRatio(
+            //   aspectRatio: controller!.value.aspectRatio,
+            //   child: CameraPreview(controller!),
+            //   child: PlatformWebViewWidget(
+            //     PlatformWebViewWidgetCreationParams(controller: _webViewController),
+            //   ).build(context)
+            // )
+
+
+            PlatformWebViewWidget(
+              PlatformWebViewWidgetCreationParams(controller: _webViewController),
+            ).build(context)
+          : const Center(child: CircularProgressIndicator()),
     );
   }
 }
