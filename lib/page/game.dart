@@ -1,15 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:webview_flutter_platform_interface/webview_flutter_platform_interface.dart';
-import 'package:camera/camera.dart';
-import 'package:permission_handler/permission_handler.dart';
-import 'package:webview_flutter/webview_flutter.dart';
-import 'package:webview_flutter_android/webview_flutter_android.dart';
-
-late List<CameraDescription> _cameras;
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  _cameras = await availableCameras();
 
   runApp(MaterialApp(
     title: 'MyStroke',
@@ -29,137 +21,91 @@ class GameScreen extends StatefulWidget {
 }
 
 class _GameScreenState extends State<GameScreen> {
-  CameraController? controller;
-  bool isCameraInitialized = false;
-  late PlatformWebViewController _webViewController;
-
-  @override
-  void initState() {
-    super.initState();
-    requestCameraPermission();
-  }
-
-  void initCamera() async {
-    try {
-      _cameras = await availableCameras();
-      controller = CameraController(_cameras[1], ResolutionPreset.medium, enableAudio: false);
-      await controller?.initialize().then((_) {
-        if (!mounted) return;
-        setState(() => isCameraInitialized = true);
-        debugPrint('Camera initialized');
-      });
-    } catch (e) {
-      debugPrint('Error initializing camera: $e');
-    }
-  }
-
-
-  void requestCameraPermission() async {
-    var cameraStatus = await Permission.camera.request();
-    if (cameraStatus.isGranted) {
-      initCamera();
-      setupWebView();
-    } else {
-      // แสดงข้อความแจ้งเตือนให้ผู้ใช้อนุญาตการใช้งานกล้อง
-      showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('การอนุญาตใช้งานกล้อง'),
-          content: const Text('แอปนี้ต้องการสิทธิ์ในการเข้าถึงกล้อง โปรดอนุญาตในการตั้งค่า'),
-          actions: [
-            TextButton(
-              child: const Text('ตกลง'),
-              onPressed: () async {
-                await openAppSettings();
-                // ตรวจสอบการอนุญาตอีกครั้งหลังจากกลับมาจากการตั้งค่า
-                var newStatus = await Permission.camera.status;
-                if (newStatus.isGranted) {
-                  initCamera();
-                  setupWebView();
-                }
-              },
-            ),
-          ],
-        ),
-      );
-    }
-  }
-
-
-  void setupWebView() {
-    _webViewController = PlatformWebViewController(
-      AndroidWebViewControllerCreationParams(),
-    )
-    ..setJavaScriptMode(JavaScriptMode.unrestricted)
-    ..setOnPlatformPermissionRequest(
-      (PlatformWebViewPermissionRequest request) {
-        if (request.types.contains(WebViewPermissionResourceType.camera)) {
-          debugPrint('Granting camera permission to WebView');
-          request.grant();
-        } else {
-          debugPrint('Denying permission request from WebView');
-          request.deny();
-        }
-      },
-    )
-    ..loadRequest(
-      LoadRequestParams(
-        uri: Uri.parse('https://tk17250.github.io/MyStrokeGame-WebGL/'),
-      ),
-    );
-
-    // เพิ่ม JavaScript เพื่อตรวจสอบสถานะกล้องและแจ้งเตือนหากมีปัญหา
-    Future.delayed(Duration(seconds: 5), () {
-      _webViewController.runJavaScript('''
-        navigator.mediaDevices.getUserMedia({ video: true })
-          .then(function(stream) {
-            console.log('Camera access granted');
-            // จัดการ stream ที่นี่
-          })
-          .catch(function(error) {
-            console.error('Error accessing camera:', error);
-            alert('ไม่สามารถเข้าถึงกล้องได้ กรุณาตรวจสอบการอนุญาตในการตั้งค่า');
-          });
-      ''');
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(
-        children: [
-          Expanded(
-            child: isCameraInitialized
-                ? PlatformWebViewWidget(
-                    PlatformWebViewWidgetCreationParams(controller: _webViewController),
-                  ).build(context)
-                : const Center(child: CircularProgressIndicator()),
+      body: DecoratedBox(
+        // Set background image
+        decoration: const BoxDecoration(
+          image: DecorationImage(
+            image: AssetImage("assets/background.jpg"),
+            fit: BoxFit.cover,
           ),
-          Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+        ),
+
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.center,
             children: [
-              ElevatedButton(
-                child: Text('รีโหลด WebView'),
-                onPressed: () {
-                  _webViewController.reload();
-                },
+              // Quest
+              Align(
+                alignment: Alignment.topRight,
+                child: ElevatedButton(
+                  onPressed: null,
+                  style: ButtonStyle(
+                    // backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
+                    elevation: MaterialStateProperty.all<double>(0),
+                  ),
+                  child: const Icon(Icons.work_rounded, color: Colors.white),
+                ),
               ),
+
+              // Space
+              const SizedBox(height: 20),
+
+              // Game regular
               ElevatedButton(
-                child: Text('เปิดการตั้งค่า'),
-                onPressed: () async {
-                  await openAppSettings();
-                  // ตรวจสอบการอนุญาตอีกครั้งหลังจากกลับมาจากการตั้งค่า
-                  var newStatus = await Permission.camera.status;
-                  if (newStatus.isGranted) {
-                    initCamera();
-                    setupWebView();
-                  }
-                },
+                onPressed: null,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(35, 47, 63, 1)),
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(20)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  minimumSize: MaterialStateProperty.all<Size>(const Size(300, 200)),
+                ),
+                child: const Column(
+                  children: [
+                    // Titile
+                    Text('เล่นแบบต่อเนื่อง', 
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+
+                    // Description
+                    Text('(แบบปกติ)', 
+                      style: TextStyle(color: Colors.white, fontSize: 16),
+                    ),
+                  ],
+                )
               ),
+
+              // Space
+              const SizedBox(height: 20),
+
+              // Game mode
+              ElevatedButton(
+                onPressed: null,
+                style: ButtonStyle(
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(39, 48, 61, 0.75)),
+                  padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(20)),
+                  shape: MaterialStateProperty.all<RoundedRectangleBorder>(
+                    RoundedRectangleBorder(
+                      borderRadius: BorderRadius.circular(10),
+                    ),
+                  ),
+                  minimumSize: MaterialStateProperty.all<Size>(const Size(300, 200)),
+                ),
+                child: const Text('เล่นแบบโหมด', 
+                  style: TextStyle(color: Colors.white, fontSize: 20),
+                ),
+              ),
+              
             ],
           ),
-        ],
+        ),
       ),
     );
   }
