@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:mystroke_app/page/game_mode.dart';
+import 'package:mystroke_app/page/game_regular.dart';
 import 'package:mystroke_app/page/quests.dart';
 
 void main() async {
@@ -68,7 +70,12 @@ class _GameScreenState extends State<GameScreen> {
 
               // Game regular
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (context) => const GameRegularScreen())
+                  );
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(39, 48, 61, 1)),
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(20)),
@@ -99,7 +106,12 @@ class _GameScreenState extends State<GameScreen> {
 
               // Game mode
               ElevatedButton(
-                onPressed: () {},
+                onPressed: () {
+                  Navigator.push(
+                    context, 
+                    MaterialPageRoute(builder: (context) => const GameModeScreen())
+                  );
+                },
                 style: ButtonStyle(
                   backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(39, 48, 61, 0.60)),
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(20)),
