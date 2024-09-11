@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:mystroke_app/page/quests.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -41,13 +42,24 @@ class _GameScreenState extends State<GameScreen> {
               // Quest
               Align(
                 alignment: Alignment.topRight,
-                child: ElevatedButton(
-                  onPressed: null,
-                  style: ButtonStyle(
-                    // backgroundColor: MaterialStateProperty.all<Color>(Colors.transparent),
-                    elevation: MaterialStateProperty.all<double>(0),
+                child: Container(
+                  decoration: const BoxDecoration(
+                    color: Color.fromRGBO(53, 65, 81, 1), // Background color
+                    shape: BoxShape.circle, // Circular shape
                   ),
-                  child: const Icon(Icons.work_rounded, color: Colors.white),
+                  child: IconButton(
+                    icon: const Icon(Icons.receipt_long, 
+                      color: Colors.white, 
+                      size: 30
+                    ),
+                    onPressed: () {
+                      Navigator.push(
+                        context, 
+                        MaterialPageRoute(builder: (context) => const QuestsScreen())
+                      );
+                    },
+                    padding: const EdgeInsets.all(16), // Adjust padding as needed
+                  ),
                 ),
               ),
 
@@ -56,9 +68,9 @@ class _GameScreenState extends State<GameScreen> {
 
               // Game regular
               ElevatedButton(
-                onPressed: null,
+                onPressed: () {},
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(35, 47, 63, 1)),
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(39, 48, 61, 1)),
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(20)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
@@ -87,9 +99,9 @@ class _GameScreenState extends State<GameScreen> {
 
               // Game mode
               ElevatedButton(
-                onPressed: null,
+                onPressed: () {},
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(39, 48, 61, 0.75)),
+                  backgroundColor: MaterialStateProperty.all<Color>(const Color.fromRGBO(39, 48, 61, 0.60)),
                   padding: MaterialStateProperty.all<EdgeInsetsGeometry>(const EdgeInsets.all(20)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
